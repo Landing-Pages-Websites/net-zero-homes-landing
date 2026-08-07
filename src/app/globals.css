@@ -36,13 +36,15 @@
   color-scheme: dark;
 }
 
-html,
-body {
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+@layer base {
+  html,
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 }
 
 /* ─── Fluid type scale (design_direction.typography.scale_steps) ─── */
@@ -51,7 +53,6 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  color: inherit;
   font-weight: 800;
 }
 
