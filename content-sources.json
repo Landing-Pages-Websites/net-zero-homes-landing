@@ -1,0 +1,70 @@
+{
+  "repo": "Landing-Pages-Websites/qbc-systems-landing",
+  "customer_id": "16ee8343-6dad-4978-987d-49a4f59ef473",
+  "customer_name": "QBC Systems, Inc.",
+  "primary_subdomain": "https://info.qbc.com",
+  "product": "TireServ — ERP software for tire & automotive wholesale distributors",
+  "claims": [
+    {
+      "claim": "48 years building software exclusively for tire and automotive wholesale distributors",
+      "source_url": "task spec: Atlas task 7641bdba input_data.content_requests ('48 years in business, purpose-built for tire distribution') + MEGA ads strategy email (max.lester@gomega.ai / Lindsay intake, 2026-07-02, §5 Creative Strategy: 'Authority and longevity — 48 years purpose-built for tire and wholesale distribution')",
+      "corroboration": "Customer memory (customer_memories, QBC): 'Founded: 1978' → 2026 − 1978 = 48 years.",
+      "verified": true,
+      "note": "Client-provided/spec-derived authority stat. qbc.com's aging site states 'over 30 years' in older boilerplate; the current, client-confirmed figure per the 2026 strategy intake is 48 years (founded 1978). If the client prefers the conservative site figure, this is a one-word swap — flagged in escalations."
+    },
+    {
+      "claim": "Purpose-built ERP for tire distribution — not a generic ERP adapted after the fact",
+      "source_url": "https://www.qbc.com/erp-software-solutions/tireserv/ ('Distribution ERP Software Designed Exclusively for Tire and Automotive Supply Distributors, Wholesalers, Retail Stores, and Warehouses')",
+      "verified": true
+    },
+    {
+      "claim": "Cloud-based, browser-only access (nothing to install)",
+      "source_url": "https://www.qbc.com/erp-software-solutions/tireserv/ ('TireServ is a cloud based Tire distribution software application package... Accessible anytime, anywhere, this user friendly Cloud based application only requires a web browser for complete access.')",
+      "verified": true
+    },
+    {
+      "claim": "Full ERP stack in one system: POS, inventory management, purchasing, AR, AP, GL, and reporting",
+      "source_url": "https://www.qbc.com/erp-software-solutions/tireserv/ ('Fully Integrated Accounting, Ecommerce, Point of Sale & Inventory Management') + MEGA strategy email §10 Focus Areas + task input_data.content_requests",
+      "verified": true
+    },
+    {
+      "claim": "Over 100 standard reports & inquiries",
+      "source_url": "https://www.qbc.com/erp-software-solutions/tireserv/ ('Over 100 Standard Reports & Inquiries')",
+      "verified": true
+    },
+    {
+      "claim": "Real-time integration with major wholesale tire platforms",
+      "source_url": "task spec: Atlas task 7641bdba input_data.content_requests + MEGA strategy email §5/§10 ('Real-time integration with major wholesale tire platforms'). Corroborated on qbc.com TireServ page: 'ATD Integration' + 'Integrated Tire Guide Pro'.",
+      "verified": true
+    },
+    {
+      "claim": "Mobile order entry and Telegram-based reporting",
+      "source_url": "task spec: Atlas task 7641bdba input_data.content_requests + MEGA strategy email §5 Creative Strategy ('mobile order entry, Telegram-based reporting')",
+      "verified": true
+    },
+    {
+      "claim": "Multi-company, multi-branch functionality; flexible inventory pricing rules; barcoding & data collection ready",
+      "source_url": "https://www.qbc.com/erp-software-solutions/tireserv/ (TireServ Features list)",
+      "verified": true
+    },
+    {
+      "claim": "Software with a Personal Touch (owner-operated, full-service software + hardware + IT + training)",
+      "source_url": "https://www.qbc.com/ (site tagline 'QBC Systems, Inc. Software with a Personal Touch') + customer_memory (full-service model)",
+      "verified": true
+    },
+    {
+      "claim": "Based in Amherst, NY — 25 Hazelwood Dr, Amherst, NY 14228; phone routes to 716-691-5201",
+      "source_url": "https://www.qbc.com/ (footer contact block)",
+      "verified": true
+    }
+  ],
+  "testimonials": [],
+  "testimonials_note": "No customer testimonials or star ratings exist on qbc.com; none fabricated. Proof section uses factual credentials only.",
+  "images": [
+    { "file": "public/images/hero-warehouse.jpg", "subject": "tire distribution warehouse", "source": "AI-generated (mega image generate, nano_banana) — tire/automotive-distribution-specific, faces not focal per imagery rule", "verified": true },
+    { "file": "public/images/mobile-order.jpg", "subject": "hands-on-tablet mobile order entry in a distribution center", "source": "AI-generated (mega image generate)", "verified": true },
+    { "file": "public/images/loading-dock.jpg", "subject": "tire wholesale loading dock operations", "source": "AI-generated (mega image generate)", "verified": true },
+    { "file": "public/images/dashboard-laptop.jpg", "subject": "ERP software dashboard on a laptop at a distribution counter", "source": "AI-generated (mega image generate)", "verified": true },
+    { "file": "public/images/pos-counter.jpg", "subject": "tire distribution point-of-sale counter", "source": "AI-generated (mega image generate)", "verified": true }
+  ]
+}

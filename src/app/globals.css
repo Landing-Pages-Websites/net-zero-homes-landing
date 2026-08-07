@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  /* QBC Systems / TireServ — brand tokens (from design_system color_roles) */
+  --color-primary: #0057e7;        /* royal blue — primary CTA */
+  --color-primary-hover: #004ac4;
+  --color-primary-active: #003da2;
+  --color-primary-disabled: #99bcf5;
+  --color-navy: #0a2540;           /* secondary — dark bands */
+  --color-navy-deep: #0a1628;      /* deepest text / footer */
+  --color-accent: #15befe;         /* cyan — focus rings, stat callouts */
+
+  /* Neutrals */
+  --color-bg: #ffffff;
+  --color-surface: #f4f7fb;
+  --color-border: #e3e9f2;
+  --color-text: #0a1628;
+  --color-muted: #5b6b82;
+  --color-muted-soft: #6b7280;
+
+  /* States */
+  --color-error: #d92d20;
+  --color-success: #12805c;
+
+  --font-display: var(--font-display-active), "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body-active), "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html, body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: inherit;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+}
+
+/* Eyebrow label (FormCard + sections rely on this class) */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* Layered soft CTA shadow — keyed to royal blue */
+.shadow-cta {
+  box-shadow: 0 12px 28px -10px rgba(0, 87, 231, 0.45),
+              0 4px 10px -4px rgba(10, 22, 40, 0.12);
+}
+
+/* Consistent soft card elevation */
+.shadow-card {
+  box-shadow: 0 1px 2px rgba(10, 22, 40, 0.04),
+              0 10px 30px -18px rgba(10, 22, 40, 0.28);
+}
+
+.shadow-card-lg {
+  box-shadow: 0 2px 6px rgba(10, 22, 40, 0.05),
+              0 26px 60px -28px rgba(10, 22, 40, 0.38);
+}
+
+/* Hairline accent divider */
+.hr-accent {
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+}
+
+/* Subtle grid texture for navy bands */
+.tex-grid {
+  background-image:
+    linear-gradient(rgba(21, 190, 254, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(21, 190, 254, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Anchor offset so sections land below the fixed header */
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+section[id] { scroll-margin-top: 84px; }
+
+/* ─── Inline per-field validation (HARD RULE #8) — restyled to QBC palette ─── */
+.lp-input-error {
+  border-color: var(--color-error) !important;
+  background-color: #fef3f2 !important;
+  box-shadow: 0 0 0 2px rgba(217, 45, 32, 0.16);
+}
+
+.lp-input-error:focus {
+  border-color: var(--color-error) !important;
+  box-shadow: 0 0 0 3px rgba(217, 45, 32, 0.26);
+  outline: none;
+}
+
+.lp-field-error {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--color-error);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
