@@ -28,7 +28,7 @@ export function Header(): React.JSX.Element {
         <a
           href="#hero"
           aria-label={`${BRAND.company} — home`}
-          className="flex max-w-[190px] items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] md:max-w-none"
+          className="flex min-w-0 max-w-[150px] shrink items-center rounded-md mr-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] md:mr-0 md:max-w-none"
         >
           <Image
             src="/brand/logo-white.png"
@@ -61,9 +61,11 @@ export function Header(): React.JSX.Element {
           </div>
           <a
             href={CONSULT_ANCHOR}
+            aria-label={CTA.primary}
             className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-bold text-[var(--color-primary-ink)] transition-all hover:-translate-y-px hover:bg-[var(--color-primary-hover)] hover:text-white active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)] md:px-5"
           >
-            {CTA.primary}
+            <span className="md:hidden">Consultation</span>
+            <span className="hidden md:inline">{CTA.primary}</span>
           </a>
         </div>
       </div>
