@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Net Zero Construction — Landing Page
 
-## Getting Started
+Production Meta-traffic landing page for **Net Zero Construction**, a luxury custom
+home builder on Florida's Gulf Coast. Ships to `https://info.netzerohomes.build`.
 
-First, run the development server:
+## Stack
+- Next.js (App Router) + Tailwind CSS v4
+- Manrope (`next/font`) — single-family display + body
+- Client-owned project photography in `public/images/` (16 images, each used once)
 
+## Structure
+Single page, anchor navigation only. Twelve section anchors in DOM order:
+`#hero · #trust-bar · #why-icf · #proven-in-storms · #energy-smart-safe-home ·
+#process · #projects · #owner-led · #proof · #service-area · #faq · #consultation`
+
+The consultation form appears in exactly two places (`#hero` and `#consultation`);
+every other CTA scrolls to `#consultation`. The mobile sticky bar is form-only.
+
+## Tracking
+`MEGA_TAG_CONFIG` (in `src/app/layout.tsx`) carries `siteKey`, `siteId`,
+`gtmId` (`GTM-PCKBHNHB`) and `pixelId` (`4326648287565669`). The MEGA optimizer
+injects **both** GTM and the Meta Pixel from that config — no hand-written GTM
+loader, `<noscript>` iframe, or `fbq('init')` block. The shared CTM script
+(`572388.tctm.co/t.js`) swaps the displayed number to a tracked line forwarding
+to 941-685-8478. `form_submit` fires on every submission; `qualified_lead` fires
+only when the estimated budget is `$1 million–$3 million` or `$3 million or more`.
+
+## Develop
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # http://localhost:3000
+npm run build   # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy via git push to the Git-linked Vercel project — never the CLI fallback.

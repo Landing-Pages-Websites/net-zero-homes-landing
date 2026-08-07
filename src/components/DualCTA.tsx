@@ -1,44 +1,49 @@
-"use client";
-
-import { CTA, PHONE, PHONE_HREF } from "@/lib/content";
 import { Icon } from "@/components/icons";
+import { CTA, CONSULT_ANCHOR } from "@/lib/content";
 
 interface DualCTAProps {
-  align?: "start" | "center";
+  ghostLabel: string;
+  ghostHref: string;
   primaryLabel?: string;
   primaryHref?: string;
-  /** Use on dark navy bands — switches the phone link to a light-on-dark style. */
-  onDark?: boolean;
+  align?: "start" | "center";
+  className?: string;
 }
 
+// Every content section closes on this row: a solid olive primary (near-black
+// ink) that scrolls to the form, plus a ghost link to the adjacent section.
 export function DualCTA({
-  align = "center",
+  ghostLabel,
+  ghostHref,
   primaryLabel = CTA.primary,
-  primaryHref = CTA.demoAnchor,
-  onDark = false,
-}: DualCTAProps) {
-  const justify = align === "start" ? "justify-start" : "justify-center";
-
-  const phoneClasses = onDark
-    ? "border-[1.5px] border-white/40 text-white hover:bg-white/10 hover:border-white"
-    : "border-[1.5px] border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-surface)]";
-
+  primaryHref = CONSULT_ANCHOR,
+  align = "start",
+  className = "",
+}: DualCTAProps): React.JSX.Element {
+  const justify = align === "center" ? "justify-center" : "justify-start";
   return (
-    <div className={`flex flex-wrap items-center ${justify} gap-3 mt-8`}>
+    <div
+      className={`flex flex-wrap items-center gap-x-7 gap-y-4 ${justify} ${className}`}
+    >
       <a
         href={primaryHref}
-        className="inline-flex items-center gap-2 bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] hover:-translate-y-0.5 active:translate-y-0 active:bg-[var(--color-primary-active)] transition-all rounded-lg px-7 py-3.5 font-semibold text-base shadow-cta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
+        className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-[var(--color-primary)] px-7 py-3.5 font-bold text-[var(--color-primary-ink)] transition-all duration-200 hover:-translate-y-px hover:bg-[var(--color-primary-hover)] hover:text-white active:translate-y-0 active:bg-[var(--color-primary-active)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)]"
       >
         {primaryLabel}
-        <Icon name="arrow" className="w-4 h-4" strokeWidth={2.4} />
+        <Icon name="arrow" className="h-4 w-4" strokeWidth={2} />
       </a>
       <a
-        href={PHONE_HREF}
-        className={`inline-flex items-center gap-2 ${phoneClasses} transition-colors rounded-lg px-6 py-3.5 font-semibold text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]`}
-        aria-label={`Call QBC Systems at ${PHONE}`}
+        href={ghostHref}
+        className="group inline-flex min-h-[44px] items-center gap-1.5 font-semibold text-[var(--color-accent)] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)]"
       >
-        <Icon name="phone" className="w-4 h-4" strokeWidth={0} fill="currentColor" />
-        {CTA.secondary}
+        <span className="border-b border-transparent pb-0.5 transition-colors group-hover:border-current">
+          {ghostLabel}
+        </span>
+        <Icon
+          name="arrow"
+          className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+          strokeWidth={2}
+        />
       </a>
     </div>
   );

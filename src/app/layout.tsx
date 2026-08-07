@@ -1,37 +1,33 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Manrope } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const display = Sora({
+// Single-family Manrope — display + body. Hierarchy comes from weight/size/tracking.
+const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-display-active",
+  weight: ["400", "500", "700", "800"],
+  variable: "--font-manrope",
   display: "swap",
 });
 
-const body = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-body-active",
-  display: "swap",
-});
-
-// === MEGA TAG CONFIG === (real QBC values — QBC opted out of Meta, so NO pixelId)
-const SITE_KEY = "5rn5f8eze80jvipf";
-const SITE_ID = "a6d7ae94-3574-4c2a-9642-4385d223e4e7";
-const GTM_ID = "GTM-5PN93D";
+// === MEGA TAG CONFIG === (real Net Zero Construction values)
+const SITE_KEY = "wo1w9pgf74jtof46";
+const SITE_ID = "e3ef990d-4df5-4654-8a43-64d0c96a55ab";
+const GTM_ID = "GTM-PCKBHNHB";
+const PIXEL_ID = "4326648287565669";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://info.netzerohomes.build"),
   title:
-    "TireServ ERP — Free Demo for Tire & Automotive Wholesale Distributors | QBC Systems",
+    "Luxury Hurricane-Resistant Custom Homes on Florida's Gulf Coast | Net Zero Construction",
   description:
-    "TireServ is the ERP built exclusively for tire & automotive wholesale distributors. POS, inventory, purchasing, AR, AP, GL, and reporting in one cloud system with real-time wholesale integration. Purpose-built over 48 years. Get a free demo.",
+    "Net Zero Construction builds luxury custom coastal homes with Insulated Concrete Forms (ICF) — engineered for hurricane resistance, energy efficiency and long-term peace of mind on Florida's Gulf Coast. Owner-led by John Wolterman, 25+ years of experience. Request a consultation.",
   openGraph: {
-    title: "TireServ ERP — Built Exclusively for Tire Wholesale Distributors",
+    title:
+      "Built to Protect Your Family & Your Investment | Net Zero Construction",
     description:
-      "One cloud system for POS, inventory, purchasing, and accounting — with real-time wholesale integration and mobile order entry. Purpose-built over 48 years by QBC Systems.",
-    images: ["/images/hero-warehouse.jpg"],
+      "Custom coastal homes built with Insulated Concrete Forms — engineered for hurricane resistance and energy efficiency on Florida's Gulf Coast. A limited number of custom homes each year, personally led by owner John Wolterman.",
     type: "website",
   },
   icons: {
@@ -46,10 +42,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const megaTagConfig = `window.MEGA_TAG_CONFIG={siteKey:"${SITE_KEY}",siteId:"${SITE_ID}",gtmId:"${GTM_ID}"};window.API_ENDPOINT="https://optimizer.gomega.ai";window.TRACKING_API_ENDPOINT="https://events-api.gomega.ai";`;
+  // The optimizer injects BOTH GTM and the Meta Pixel from this config —
+  // we hand-write NO GTM loader, <noscript> iframe, or fbq('init') block.
+  const megaTagConfig = `window.MEGA_TAG_CONFIG={siteKey:"${SITE_KEY}",siteId:"${SITE_ID}",gtmId:"${GTM_ID}",pixelId:"${PIXEL_ID}"};window.API_ENDPOINT="https://optimizer.gomega.ai";window.TRACKING_API_ENDPOINT="https://events-api.gomega.ai";`;
 
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={manrope.variable}>
       <head>
         <meta name="mega-site-id" content={SITE_ID} />
         <script
@@ -66,10 +64,7 @@ export default function RootLayout({
       <body className="bg-[var(--color-bg)] text-[var(--color-text)] antialiased">
         {children}
         {/* CallTrackingMetrics — universal Mega account (never remove) */}
-        <Script
-          src="https://572388.tctm.co/t.js"
-          strategy="afterInteractive"
-        />
+        <Script src="https://572388.tctm.co/t.js" strategy="afterInteractive" />
       </body>
     </html>
   );

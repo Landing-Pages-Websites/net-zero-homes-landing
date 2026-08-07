@@ -1,106 +1,96 @@
 import type { JSX, SVGProps } from "react";
 
-// Single icon family — lucide-style stroked SVGs (24×24, currentColor).
+// Single icon family — thin-stroke line icons (24×24, currentColor, 1.5px caps).
 // Never emoji. Keys map to the `icon` strings used in content.ts.
 
 type IconPaths = JSX.Element;
 
 const PATHS: Record<string, IconPaths> = {
-  clipboard: (
+  // ── Wall / method ──
+  wind: (
     <>
-      <rect x="8" y="3" width="8" height="4" rx="1" />
-      <path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
-      <path d="M9 12h6M9 16h4" />
+      <path d="M3 8h11a3 3 0 1 0-3-3" />
+      <path d="M3 12h15a3 3 0 1 1-3 3" />
+      <path d="M3 16h8a2.5 2.5 0 1 1-2.5 2.5" />
     </>
   ),
-  boxes: (
+  waves: (
     <>
-      <path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z" />
-      <path d="m3 7 9 5 9-5M12 12v10" />
+      <path d="M2 7c1.8 0 1.8 1.6 3.6 1.6S7.4 7 9.2 7s1.8 1.6 3.6 1.6S14.6 7 16.4 7s1.8 1.6 3.6 1.6" />
+      <path d="M2 12c1.8 0 1.8 1.6 3.6 1.6S7.4 12 9.2 12s1.8 1.6 3.6 1.6S14.6 12 16.4 12s1.8 1.6 3.6 1.6" />
+      <path d="M2 17c1.8 0 1.8 1.6 3.6 1.6S7.4 17 9.2 17s1.8 1.6 3.6 1.6S14.6 17 16.4 17s1.8 1.6 3.6 1.6" />
     </>
   ),
-  trending: (
+  thermometer: (
     <>
-      <path d="M3 17 9 11l4 4 8-8" />
-      <path d="M15 7h6v6" />
+      <path d="M14 14.76V5a2 2 0 1 0-4 0v9.76a4 4 0 1 0 4 0Z" />
+      <path d="M12 9v6" />
     </>
   ),
-  cart: (
+  shield: (
     <>
-      <circle cx="9" cy="20" r="1.4" />
-      <circle cx="18" cy="20" r="1.4" />
-      <path d="M2 3h2.2l2.3 12.4a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.2L21 7H6" />
+      <path d="M12 3 5 6v5c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9V6l-7-3Z" />
+      <path d="m9.2 12 2 2 3.6-4" />
     </>
   ),
-  truck: (
+  layers: (
     <>
-      <path d="M2 6a1 1 0 0 1 1-1h11v11H2Z" />
-      <path d="M14 8h4l3 3v4h-7Z" />
-      <circle cx="7" cy="18" r="1.6" />
-      <circle cx="17" cy="18" r="1.6" />
+      <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+      <path d="m3 13 9 5 9-5" />
     </>
   ),
-  receipt: (
+  window: (
     <>
-      <path d="M5 3v18l2-1.4L9 21l2-1.4L13 21l2-1.4L17 21l2-1.4V3l-2 1.4L15 3l-2 1.4L11 3 9 4.4 7 3Z" />
-      <path d="M9 8h6M9 12h6" />
+      <rect x="4" y="3" width="16" height="18" rx="1.5" />
+      <path d="M12 3v18M4 12h16" />
     </>
   ),
-  wallet: (
+  leaf: (
     <>
-      <path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
-      <path d="M3 9h15a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1 0-4h2" />
+      <path d="M4 20c0-8 6-14 16-14 0 10-6 14-14 14a6 6 0 0 1-2 0Z" />
+      <path d="M9 15c2.5-3 5-4.5 8-5.5" />
     </>
   ),
-  ledger: (
+  // ── Trust chips ──
+  clock: (
     <>
-      <path d="M4 4a2 2 0 0 1 2-2h11a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2Z" />
-      <path d="M4 18h14M8 7h6M8 11h6" />
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3.5 2" />
     </>
   ),
-  chart: (
+  badge: (
     <>
-      <path d="M3 3v16a2 2 0 0 0 2 2h16" />
-      <path d="M8 15v-3M13 15V8M18 15v-5" />
+      <path d="M12 2.5 14.4 5l3.4-.3.9 3.3 2.8 2-1.5 3.1 1.5 3.1-2.8 2-.9 3.3-3.4-.3L12 21.5 9.6 19l-3.4.3-.9-3.3-2.8-2 1.5-3.1L2.5 7.7l2.8-2 .9-3.3L9.6 5 12 2.5Z" />
+      <path d="m9.3 12 1.9 1.9 3.6-3.8" />
     </>
   ),
-  sync: (
+  pin: (
     <>
-      <path d="M21 8a8 8 0 0 0-14.9-2M3 5v4h4" />
-      <path d="M3 16a8 8 0 0 0 14.9 2M21 19v-4h-4" />
+      <path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11Z" />
+      <circle cx="12" cy="10" r="2.5" />
     </>
   ),
-  mobile: (
-    <>
-      <rect x="6" y="2" width="12" height="20" rx="2.5" />
-      <path d="M11 18h2" />
-    </>
-  ),
-  send: (
-    <>
-      <path d="M22 3 2 11l7 2.5L12 21l3-6 7-12Z" />
-      <path d="m9 13.5 6-6.5" />
-    </>
-  ),
-  cloud: (
-    <>
-      <path d="M7 18a4 4 0 0 1-.6-7.95 5 5 0 0 1 9.7-1.3A4 4 0 0 1 17 18Z" />
-    </>
-  ),
+  // ── UI ──
   phone: (
-    <path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.272.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+    <path d="M15.5 3h3a1.5 1.5 0 0 1 1.5 1.6c-.15 2.1-.65 4.1-1.5 5.9a1.4 1.4 0 0 1-1.3.8H15a13 13 0 0 1-9-9V1.8a1.4 1.4 0 0 1 .8-1.3M6.3 4H4.6A1.5 1.5 0 0 0 3 5.5C3.6 13.4 10.6 20.4 18.5 21a1.5 1.5 0 0 0 1.5-1.6v-1.7a1.4 1.4 0 0 0-1.1-1.4l-3-.6a1.4 1.4 0 0 0-1.4.6l-.9 1.2a11 11 0 0 1-4.8-4.8l1.2-.9a1.4 1.4 0 0 0 .5-1.4l-.6-3A1.4 1.4 0 0 0 6.3 4Z" />
   ),
   arrow: <path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />,
   check: <path d="m4.5 12.75 6 6 9-13.5" />,
-  x: <path d="M6 6l12 12M18 6 6 18" />,
+  chevron: <path d="m6 9 6 6 6-6" />,
   plus: <path d="M12 4.5v15m7.5-7.5h-15" />,
+  x: <path d="M6 6l12 12M18 6 6 18" />,
 };
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   name: keyof typeof PATHS | string;
 }
 
-export function Icon({ name, className, ...rest }: IconProps): JSX.Element | null {
+export function Icon({
+  name,
+  className,
+  strokeWidth = 1.5,
+  ...rest
+}: IconProps): JSX.Element | null {
   const path = PATHS[name];
   if (!path) return null;
   return (
@@ -108,7 +98,7 @@ export function Icon({ name, className, ...rest }: IconProps): JSX.Element | nul
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.8}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
