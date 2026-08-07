@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { NAV_LINKS, CONSULT_ANCHOR, BRAND, CTA } from "@/lib/content";
+import { CONSULT_ANCHOR, BRAND, CTA } from "@/lib/content";
 import { PhoneButton } from "@/components/PhoneButton";
 
 export function Header(): React.JSX.Element {
@@ -24,11 +24,11 @@ export function Header(): React.JSX.Element {
           : "border-[var(--color-border)]/60 bg-[var(--color-bg)]/85"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between px-5 md:h-[76px] md:px-8 lg:px-10">
+      <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-4 md:h-[80px] md:px-8 lg:px-10">
         <a
           href="#hero"
           aria-label={`${BRAND.company} — home`}
-          className="flex min-w-0 max-w-[150px] shrink items-center rounded-md mr-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] md:mr-0 md:max-w-none"
+          className="flex min-w-0 max-w-[224px] shrink items-center rounded-md mr-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] md:mr-0 md:max-w-none"
         >
           <Image
             src="/brand/logo-white.png"
@@ -36,24 +36,9 @@ export function Header(): React.JSX.Element {
             width={1136}
             height={245}
             priority
-            className="h-8 w-auto object-contain md:h-10"
+            className="h-12 w-auto object-contain md:h-14"
           />
         </a>
-
-        <nav
-          aria-label="Primary"
-          className="hidden items-center gap-8 lg:flex"
-        >
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm font-semibold text-[var(--color-muted)] transition-colors hover:text-[var(--color-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)]"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
 
         <div className="flex items-center gap-2.5 md:gap-3">
           <div className="hidden sm:block">
@@ -62,7 +47,7 @@ export function Header(): React.JSX.Element {
           <a
             href={CONSULT_ANCHOR}
             aria-label={CTA.primary}
-            className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-bold text-[var(--color-primary-ink)] transition-all hover:-translate-y-px hover:bg-[var(--color-primary-hover)] hover:text-white active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)] md:px-5"
+            className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg bg-[var(--color-primary)] px-3 py-2.5 text-sm font-bold text-[var(--color-primary-ink)] transition-all hover:-translate-y-px hover:bg-[var(--color-primary-hover)] hover:text-white active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)] md:px-5"
           >
             <span className="md:hidden">Consultation</span>
             <span className="hidden md:inline">{CTA.primary}</span>

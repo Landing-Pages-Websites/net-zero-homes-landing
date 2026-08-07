@@ -22,13 +22,6 @@ export const BRAND = {
   yearsExperience: "25+",
 };
 
-export const NAV_LINKS = [
-  { label: "Why ICF", href: "#why-icf" },
-  { label: "Our Process", href: "#process" },
-  { label: "Projects", href: "#projects" },
-  { label: "FAQ", href: "#faq" },
-];
-
 export const HERO = {
   eyebrow: "Luxury Custom Homes · Florida's Gulf Coast",
   h1: "Built to Protect Your Family & Your Investment",

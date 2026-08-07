@@ -367,6 +367,7 @@ export function FormCard({
           name="email"
           type="email"
           required
+          pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"
           autoComplete="email"
           placeholder="you@example.com"
           value={data.email}
@@ -402,6 +403,7 @@ export function FormCard({
           name="phone"
           type="tel"
           required
+          pattern="\(\d{3}\) \d{3}-\d{4}"
           inputMode="numeric"
           autoComplete="tel"
           placeholder="(941) 000-0000"

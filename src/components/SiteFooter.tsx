@@ -1,12 +1,5 @@
 import Image from "next/image";
-import {
-  BRAND,
-  FOOTER,
-  NAV_LINKS,
-  PHONE,
-  PHONE_HREF,
-  CONSULT_ANCHOR,
-} from "@/lib/content";
+import { BRAND, FOOTER, PHONE, PHONE_HREF } from "@/lib/content";
 import { Icon } from "@/components/icons";
 
 export function SiteFooter(): React.JSX.Element {
@@ -15,7 +8,7 @@ export function SiteFooter(): React.JSX.Element {
   return (
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-bg)]">
       <div className="mx-auto max-w-[1240px] px-5 py-14 md:px-8 md:py-16 lg:px-10">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-10 md:grid-cols-[1.6fr_1fr]">
           {/* Identity */}
           <div>
             <Image
@@ -23,7 +16,7 @@ export function SiteFooter(): React.JSX.Element {
               alt={BRAND.company}
               width={1136}
               height={245}
-              className="h-9 w-auto object-contain"
+              className="h-12 w-auto object-contain md:h-14"
             />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--color-muted)]">
               {FOOTER.boilerplate}
@@ -56,36 +49,6 @@ export function SiteFooter(): React.JSX.Element {
                 {PHONE}
               </a>
             </address>
-          </div>
-
-          {/* Explore */}
-          <div>
-            <h3 className="text-[0.8125rem] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
-              Explore
-            </h3>
-            <nav aria-label="Footer" className="mt-4 flex flex-col gap-2.5">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-accent)]"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <a
-                href="#service-area"
-                className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-accent)]"
-              >
-                Service Area
-              </a>
-              <a
-                href={CONSULT_ANCHOR}
-                className="text-sm font-semibold text-[var(--color-accent)] transition-colors hover:text-white"
-              >
-                Request a Consultation
-              </a>
-            </nav>
           </div>
         </div>
 
