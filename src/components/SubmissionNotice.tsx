@@ -2,7 +2,11 @@ import type { Ref } from "react";
 import { PHONE, PHONE_HREF } from "@/lib/content";
 import type { AttemptState } from "@/components/submissionAttempt";
 
-type NoticeKind = "unconfirmed" | "previous" | "storage-unavailable";
+type NoticeKind =
+  | "unconfirmed"
+  | "previous"
+  | "session-locked"
+  | "storage-unavailable";
 
 const CHECK = "and we\u2019ll check for you.";
 
@@ -17,6 +21,11 @@ const COPY: Record<NoticeKind, { title: string; body: string; close: string }> =
     title: "You already started a request from this page.",
     body: "We can\u2019t confirm from here whether it reached our team, so this form won\u2019t send it again.",
     close: CHECK,
+  },
+  "session-locked": {
+    title: "A request was already started from this page.",
+    body: "To avoid a duplicate, this form won\u2019t send again.",
+    close: "if you have anything to add.",
   },
   "storage-unavailable": {
     title: "Your request wasn\u2019t sent.",
@@ -36,6 +45,10 @@ export function noticeFor(
   const announce = acted && attempt.owner === idPrefix;
   const { phase } = attempt;
   if (phase === "unconfirmed" || phase === "previous") return { kind: phase, announce };
+  // Another card's accepted attempt locks this one quietly; the owner thanks.
+  if (phase === "accepted") {
+    return attempt.owner === idPrefix ? null : { kind: "session-locked", announce: false };
+  }
   if (phase === "idle" && storageBlocked) {
     return { kind: "storage-unavailable", announce: true };
   }

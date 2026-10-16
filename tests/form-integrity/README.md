@@ -30,7 +30,11 @@ The current contract, as implemented in `src/components/FormCard.tsx`,
    "Your request wasn't sent" and offers the existing phone number.
 4. **Only `{ ok: true }` confirms.** Thank-you plus the existing
    `form_submit`/`form_submission` (and `qualified_lead` when qualified)
-   events fire once. Every other result or throw is **unconfirmed**: the
+   events fire once. Only the card that sent the lead shows the thank-you.
+   The other card keeps its form and entered values, locked, with a quiet
+   (no `role="alert"`, no focus) notice that a request was already started
+   from this page and this form won't send again. It never says that card's
+   details were received. Every other result or throw is **unconfirmed**: the
    spinner clears, the entered details stay, and the originating card shows
    and focuses a `role="alert"` notice tied to the form by `aria-describedby`.
    The notice says receipt couldn't be confirmed, that it may already have
@@ -82,7 +86,11 @@ Covered:
 - empty and invalid input: no request, no marker, then corrected → one accepted POST
 - accepted qualified/unqualified on each card, each in a fresh session:
   payload, IDs, source, qualification, route; exactly one event set per
-  destination; marker kept; no PII in storage; the twin card blocked
+  destination; marker kept; no PII in storage. The twin stays a form with
+  no thank-you, keeps its values, is not busy, has a disabled
+  `type="button"` and shows the non-announcing `session-locked` notice
+  without taking focus; no duplicate IDs across cards. Stale and fresh
+  handlers and native submit on the twin add no request or event
 - unconfirmed outcomes: network rejection, HTTP 500, 200 `{ok:false}`,
   malformed JSON, missing/null/string/numeric `ok`, null and primitive
   bodies. Each keeps its values, clears busy, shows an honest focused alert

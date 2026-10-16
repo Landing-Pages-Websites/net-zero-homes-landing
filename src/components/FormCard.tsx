@@ -262,7 +262,9 @@ export function FormCard({
   const cardBase =
     "rounded-2xl border border-[var(--color-sand)] bg-[var(--color-surface-2)] shadow-form";
 
-  if (attempt.phase === "accepted") {
+  // Only the card that sent the accepted lead thanks the visitor; the other
+  // card keeps its form, locked, with a session-lock notice.
+  if (attempt.phase === "accepted" && attempt.owner === idPrefix) {
     return (
       <div className={`${cardBase} p-8 md:p-10`}>
         <div className="flex flex-col items-center gap-4 text-center">

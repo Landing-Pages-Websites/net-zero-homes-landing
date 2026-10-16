@@ -174,21 +174,49 @@ for (const [name, values] of [["empty", null], ["invalid email + phone", { ...VA
 }
 
 // ─── Accepted path: separate fresh sessions ───
+// Only the sending card thanks the visitor; its twin keeps its form, values
+// and a quiet session-lock notice, and never claims its details were received.
+
+const NOT_RECEIVED = /received|got your|we.ve got|confirm/i;
+
+function assertSessionLockedTwin(twin, values, budget) {
+  assert.ok(twin.q.form(), "twin stays a form");
+  assert.doesNotMatch(twin.q.text(), THANK_YOU, "twin shows no success");
+  assertLockedNotBusy(twin);
+  assert.equal(twin.q.button().props.type, "button", "no native submit button");
+  const text = assertNotice(twin, "session-locked", { announced: false });
+  assert.notEqual(twin.env.focused, twin.id("submit-error"), "twin notice does not take focus");
+  assert.match(text, /already started from this page/);
+  assert.match(text, /won.t send again/);
+  assert.doesNotMatch(text, NOT_RECEIVED, "never says the twin's details were received");
+  assertRetained(twin, values, budget);
+}
+
+function assertUniqueIds(...cards) {
+  const ids = cards.flatMap((c) => c.q.all().map((n) => n.props.id).filter(Boolean));
+  assert.deepEqual(ids, [...new Set(ids)], "no duplicate IDs across both cards");
+}
 
 for (const inst of INSTANCES) {
   for (const qualified of [true, false]) {
-    test(`${inst.name}: accepted ${qualified ? "qualified" : "unqualified"} lead (fresh session) emits exact events once`, async () => {
+    test(`${inst.name}: accepted ${qualified ? "qualified" : "unqualified"} lead (fresh session) emits exact events once; twin stays session-locked`, async () => {
       const page = openPage();
       const ctx = page[inst.name];
       const twin = inst === HERO ? page.consult : page.hero;
       const budget = qualified ? QUALIFIED_BUDGET : DISQUALIFYING_BUDGET;
+      const twinBudget = qualified ? DISQUALIFYING_BUDGET : QUALIFIED_BUDGET;
       page.env.responders.push(transport.json(200, { ok: true, id: "lead_1" }));
       fill(ctx, budget);
-      fill(twin);
+      fill(twin, twinBudget, EDITED);
       const staleTwin = twin.q.button().props.onClick;
+      const staleTwinSubmit = twin.q.form().props.onSubmit;
       await click(page, ctx);
+      assert.match(ctx.q.text(), THANK_YOU);
+      assertSessionLockedTwin(twin, EDITED, twinBudget);
+      assertUniqueIds(page.hero, page.consult);
       staleTwin();
-      await settleAll(page);
+      staleTwinSubmit({ preventDefault() {} });
+      await attemptEverything(page);
 
       assert.equal(page.env.requests.length, 1);
       const { url, body } = page.env.requests[0];
@@ -209,6 +237,11 @@ for (const inst of INSTANCES) {
       assert.deepEqual(page.env.megaTag, ["form_submit", ...tail].map((event) => ({ event, ...route })));
       assert.deepEqual(page.env.dataLayer, ["form_submission", ...tail].map((event) => ({ event, ...route })));
       assert.match(ctx.q.text(), THANK_YOU);
+      // attemptEverything refilled the twin with EDITED + a qualified budget.
+      assert.doesNotMatch(twin.q.text(), THANK_YOU);
+      assertLockedNotBusy(twin);
+      assert.equal(notice(twin).props.role, undefined, "twin notice never announced");
+      assertRetained(twin, EDITED, QUALIFIED_BUDGET);
       assert.equal(page.env.session.getItem(MARKER_KEY), "attempted", "marker kept after acceptance");
       assert.deepEqual(Object.keys(page.env.session.entries()).sort(), [HOOK_SESSION_KEY, MARKER_KEY].sort());
       assertNoPii(page.env);
