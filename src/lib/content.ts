@@ -26,7 +26,7 @@ export const HERO = {
   eyebrow: "Luxury Custom Homes · Florida's Gulf Coast",
   h1: "Built to Protect Your Family & Your Investment",
   subhead:
-    "Custom coastal homes built with Insulated Concrete Forms — engineered for hurricane resistance, energy efficiency, and long-term peace of mind on Florida's Gulf Coast.",
+    "Custom coastal homes built on an integrated structural and building-envelope system — coordinated with your architect and structural engineer for hurricane resistance, energy efficiency, and long-term peace of mind on Florida's Gulf Coast.",
   formHeading: "Request a Consultation",
   formHelper:
     "Tell us about your project and a member of our team will be in touch to discuss your goals, location, and timeline.",
@@ -37,36 +37,36 @@ export const HERO = {
 
 export const TRUST_CHIPS = [
   { icon: "clock", label: "25+ Years on the Gulf Coast" },
-  { icon: "layers", label: "ICF Construction Specialist" },
+  { icon: "layers", label: "Integrated Coastal Construction" },
   { icon: "badge", label: "Energy Smart Safe Home Standard" },
   { icon: "pin", label: "Sarasota · Venice · St. Petersburg" },
 ];
 
-// ─── Why ICF — four cards, real body copy (80–150 words each) ───
+// ─── Whole-system resilience, four cards (export name kept as WHY_ICF) ───
 export const WHY_ICF = {
-  eyebrow: "The Difference Is in the Walls",
-  h2: "ICF Construction — A Method Almost No Other Builder Here Uses",
-  lede: "ICF stands for Insulated Concrete Forms. In coastal Florida, how your home is built matters far more than how it looks on the day it is finished — and almost no other builder in this market builds this way.",
+  eyebrow: "The Difference Is the Whole Structure",
+  h2: "The Right Material in the Right Place, Engineered as One System",
+  lede: "No single material does everything. We work with your architect and structural engineer to choose the structural system for each home — often reinforced-concrete ICF exterior walls, and where the design calls for it, reinforced-concrete or InsulDeck floors and roofs, structural steel and engineered framing — then detail it as one complete building envelope.",
   cards: [
     {
       icon: "wind",
       title: "Extreme Wind & Flying Debris",
-      body: "An Insulated Concrete Form wall is a steel-reinforced concrete core poured between two rigid insulation faces — one monolithic structure, not a cavity of studs and sheathing. That solid core is engineered to withstand extreme wind pressure and the flying debris a coastal storm turns into projectiles, far exceeding what traditional wood-frame construction can offer. Where a stick-framed wall depends on connectors and fasteners to hold a system together, an ICF wall carries the load as one continuous mass of reinforced concrete. For a home meant to protect the people inside it, that is the difference we design around from the very first wall.",
+      body: "Hurricane resistance comes from the complete engineered structure — foundation, walls, floors, roof, connections and openings — not from one product. Reinforced-concrete ICF walls provide exceptional structural resilience, and where engineering calls for it we pair them with reinforced-concrete or InsulDeck floors and roofs, structural steel for long spans and engineered lumber where it is the right solution. The structural engineer designs a continuous load path through that system, and impact-rated windows and doors help keep the envelope closed when wind-borne debris is in the air.",
     },
     {
       icon: "waves",
-      title: "Storm Surge & Moisture",
-      body: "Water behaves very differently against a solid, monolithic wall than it does against a stick-framed one. An ICF assembly has no stud cavities to saturate and no framing lumber to wick and hold moisture, so it behaves fundamentally differently in a surge environment. The concrete core does not swell, warp or feed mold the way soaked framing can, and the continuous insulation resists wind-driven rain that finds its way into conventional walls. In coastal Florida — where a ground floor may face standing water at some point in its life — building the shell from reinforced concrete rather than lumber is a deliberate, long-term decision.",
+      title: "Moisture & Wind-Driven Rain",
+      body: "On the Gulf Coast, managing water and humidity matters as much as managing wind. We treat moisture as a building-envelope detail, not an afterthought: drainage, flashing where roof, wall and openings meet, careful air sealing, and HVAC sized to control humidity. ICF eliminates conventional wood framing within the wall assembly, and continuous insulation helps the envelope stay drier and more stable. Building science does not make moisture risk disappear — it reduces that risk and gives you far more control over how the home handles a wet, humid climate.",
     },
     {
       icon: "thermometer",
       title: "Insulation & Comfort",
-      body: "Because the concrete core is wrapped in continuous insulation on both faces, an ICF home is dramatically tighter than a wood-framed one. There are no thermal bridges through studs, no gaps where batt insulation was rushed, and far less air leakage across the whole envelope. The result is more even temperatures room to room, a mechanical system that cycles less often, and a home that holds its conditioned air instead of fighting the Florida heat all day. That tighter envelope is the foundation of the Energy Smart Safe Home standard — comfort comes directly from how the wall is built, not from equipment added on later.",
+      body: "ICF walls wrap a reinforced-concrete core in continuous insulation, and within a properly designed envelope they can reduce air infiltration. Combined with high-performance windows, the roof assembly and correctly sized mechanical systems, that adds up to steadier indoor temperatures, better humidity control and equipment that is not fighting the Florida heat all day. Comfort comes from the whole building working together — which is why we plan the envelope and the systems at the same time rather than adding equipment later.",
     },
     {
       icon: "shield",
       title: "Quiet & Durability",
-      body: "The same mass that resists wind and holds temperature also deadens sound. Inside an ICF home, outside noise falls away and rooms feel calm and solid in a way a wood-framed house rarely does. That mass is also what makes the structure endure: reinforced concrete is not on a warranty clock the way framing lumber is, and it does not rot, sag or feed pests over the decades. When you are investing in a home meant to serve a family for generations on the Gulf Coast, building the shell to last decades rather than to clear a warranty cycle is the whole point.",
+      body: "Mass deadens sound, so homes built with concrete walls and floors tend to feel calm and solid inside. Reinforced-concrete assemblies are durable choices for a salt-air, high-humidity coast, and putting the right material in each location — concrete, steel or engineered wood — is how we build for the long term. When you are investing in a home meant to serve your family for generations on the Gulf Coast, durability is decided in the structure and the details, long before the finishes go in.",
     },
   ],
 };
@@ -74,8 +74,13 @@ export const WHY_ICF = {
 // ─── Proven in real storms ───
 export const PROVEN = {
   eyebrow: "Real-World Performance",
-  h2: "Proven Performance in Real Storms",
-  body: "Homes Net Zero has built have endured recent hurricanes with little to no damage, providing real-world proof of performance in severe storms. We do not talk about what a home will do in a storm that has not arrived — we point to what these homes have already done.",
+  h2: "Tested by Real Florida Hurricane Conditions",
+  body: "Net Zero Construction has completed homes that have been tested by actual Florida hurricane conditions. We would rather point to that experience than predict what a home will do in a storm that has not arrived — and each home's performance comes from its own engineered structural system, designed for its site and exposure.",
+  approach: {
+    label: "Our building approach",
+    statement:
+      "The strength of the home comes from the complete engineered structural system, including the foundation, walls, floors, roof, connections and openings. No single material does everything. Net Zero Construction works with the architect and structural engineer to create an integrated structural system appropriate for each home.",
+  },
   closing:
     "No builder controls a storm. What a builder controls is how the home is engineered before one ever arrives — and that is where every decision we make is aimed.",
 };
@@ -89,7 +94,7 @@ export const ENERGY = {
     {
       icon: "layers",
       title: "The Structural Shell",
-      body: "Every Energy Smart Safe Home starts with the same backbone: an Insulated Concrete Form structural shell. The steel-reinforced concrete core is the load-bearing structure and the storm-resistant barrier at once, and the insulation bonded to both faces makes it a high-performance thermal envelope the moment the walls go up. Nothing is layered on afterward to reach for efficiency — the efficiency is built into the structure itself. That is why we treat ICF as the foundation of the standard rather than an option: it decides how the home performs in a storm, how it holds temperature, and how long it lasts, all in a single wall assembly.",
+      body: "Every Energy Smart Safe Home starts with a structural shell engineered for its site and design. Working with the architect and structural engineer, we select the system for each project: reinforced-concrete ICF exterior walls with continuous insulation, and where appropriate InsulDeck or reinforced-concrete elevated floors and roofs, structural steel for long spans or concentrated loads, and engineered lumber where it is the right solution. Not every home uses every component — the structure is project-specific. What stays constant is the goal: the right material in the right place, engineered as one complete system.",
     },
     {
       icon: "window",
@@ -99,7 +104,7 @@ export const ENERGY = {
     {
       icon: "leaf",
       title: "High-Performance Systems",
-      body: "On top of a tight shell and a sealed envelope, we specify efficient mechanical, water and electrical systems sized for the way the home actually performs. Because the envelope does so much of the work, the equipment can be smaller, run less and last longer — reducing energy use and improving comfort without leaning on any single gadget. The home is left net zero-ready: engineered so high-performance systems and future upgrades can carry it the rest of the way as energy demands rise. It is a home designed for the next several decades of Gulf Coast living, not just for the day the keys are handed over.",
+      body: "On top of a tight shell and a sealed envelope, we coordinate efficient mechanical, water and electrical systems sized for the way the home actually performs — HVAC matched to the envelope, with humidity control and ventilation planned together. Because the envelope does much of the work, the equipment is not fighting the building, which supports lower energy use and better comfort without leaning on any single gadget. Where a client wants to pursue net zero energy performance, the home can be designed so solar and other renewable systems can be incorporated. It is a home planned for decades of Gulf Coast living.",
     },
   ],
 };
@@ -117,8 +122,8 @@ export const PROCESS = {
     },
     {
       num: "02",
-      title: "Design and Build Together",
-      body: "Working closely with architects, engineers and trusted trades, John leads the build hands-on — on the job site, not managing it from a distance. You stay involved and informed throughout, so the home that gets built is the home you planned. This is where the ICF shell, the impact-rated envelope and the high-performance systems come together in the field, each detail coordinated so the parts function as one engineered whole. Because Net Zero takes on a limited number of homes each year, your project gets the owner's direct attention rather than a rotation of site managers. This is the heart of Living the Experience: your preferences and our expertise building the same thing.",
+      title: "Coordinate and Build Together",
+      body: "Working closely with your architect, structural engineer and trusted trades, John leads the build hands-on — on the job site, not managing it from a distance. You stay involved and informed throughout, so the home that gets built is the home you planned. This is where the project-specific structural system, the impact-rated envelope and the high-performance systems come together in the field, each detail coordinated so the parts function as one engineered whole. Because Net Zero takes on a limited number of homes each year, your project gets the owner's direct attention rather than a rotation of site managers. This is the heart of Living the Experience: your preferences and our expertise building the same thing.",
     },
     {
       num: "03",
@@ -222,15 +227,15 @@ export const FAQ = {
   items: [
     {
       q: "What is ICF, and how is it different from block or wood-frame construction?",
-      a: "ICF stands for Insulated Concrete Forms. In practice, your home's walls are a steel-reinforced concrete core poured between two permanent faces of rigid insulation — one continuous, monolithic structure rather than a frame of wood studs or stacked block. Wood-frame walls rely on fasteners and sheathing to hold a system together; concrete block is strong but insulates poorly on its own. An ICF wall is structural, storm-resistant and highly insulated all at once, which is why we use it as the backbone of every home we build on the coast.",
+      a: "ICF stands for Insulated Concrete Forms: a steel-reinforced concrete core poured between two permanent faces of rigid insulation, creating reinforced-concrete exterior walls with continuous insulation. Properly engineered wood-frame and concrete block construction can meet the Florida Building Code; we choose ICF where it is the right exterior wall for the project because it combines exceptional structural resilience and continuous insulation in one assembly. It is one component of our whole-building approach — alongside the floors, roof, connections and impact-rated openings engineered as one system with your architect and structural engineer.",
     },
     {
       q: "Does building with ICF change how my home can be designed, or how it looks?",
-      a: "No. ICF changes what the walls are made of, not what the home can be. Inside and out, a finished ICF home looks like any other high-end custom home — the concrete core is completely concealed by the finishes, cladding and details you choose. We work from your architecture, whether that is a contemporary coastal design or a Mediterranean-style estate, and engineer the ICF shell to support it. Wall thickness is planned into the design from the start, so the method disappears into the finished home and only the performance remains.",
+      a: "No. ICF changes what the walls are made of, not what the home can be. Inside and out, a finished ICF home looks like any other high-end custom home — the concrete core is completely concealed by the finishes, cladding and details you choose. We work from your architecture, whether that is a contemporary coastal design or a Mediterranean-style estate, and coordinate with your structural engineer on a structural system that supports it. Wall thickness is planned into the design from the start, so the method disappears into the finished home and only the performance remains.",
     },
     {
       q: "How does ICF affect energy performance and day-to-day comfort?",
-      a: "Because the concrete core is wrapped in continuous insulation on both faces, an ICF home is far tighter than a wood-framed one — fewer thermal bridges, less air leakage, and a mechanical system that cycles less to hold temperature. Day to day, that reads as more even temperatures from room to room, noticeably quieter interiors, and a home that stays comfortable through the Florida heat. It is the structural basis of our Energy Smart Safe Home standard and leaves the home net zero-ready. We do not publish savings figures, because performance depends on your design — but the envelope does the heavy lifting.",
+      a: "ICF helps, but energy performance comes from the whole building, not one material. Continuous insulation in the walls, air sealing, high-performance windows and doors, the roof assembly and properly sized HVAC with humidity control all work together. Day to day, that tends to mean steadier temperatures from room to room, quieter interiors and a home that stays comfortable through the Florida heat. Where you want to pursue net zero energy performance, the home can be designed for solar and other renewables. We do not publish savings figures, because performance depends on your design.",
     },
     {
       q: "Do you build on my lot, or can you help me find one?",
@@ -238,11 +243,11 @@ export const FAQ = {
     },
     {
       q: "Do you work with my architect?",
-      a: "Yes. If you already have an architect, we work directly alongside them, coordinating the structural and envelope engineering that ICF construction requires so your design is realized without compromise. If you do not yet have one, we can bring you together with architects we have built with before and trust on coastal projects. Either way, the goal is the same: architecture, engineering and construction working as one team from the first planning conversation — which is how a complex custom home comes together without the gaps that create problems mid-build.",
+      a: "Yes. If you already have an architect, we work directly alongside them, coordinating with them and your structural engineer on the structural system and building envelope so your design is realized without compromise. If you do not yet have one, we can bring you together with architects we have built with before and trust on coastal projects. Either way, the goal is the same: architecture, engineering and construction working as one team from the first planning conversation — which is how a complex custom home comes together without the gaps that create problems mid-build.",
     },
     {
       q: "What does the process look like from first conversation to move-in?",
-      a: "It follows three stages: Plan with Purpose, Design and Build Together, and Build with Confidence. We begin with your property, goals and exposure, then move into coordinated design and engineering, permitting and coastal-compliance review, and finally a documented, quality-checked build that John leads hands-on. You stay involved and informed the whole way — we call it Living the Experience. Every custom home is different, so we do not put a stopwatch on your project; what we commit to is a considered, owner-led path from the first conversation to the day you move in.",
+      a: "It follows three stages: Plan with Purpose, Coordinate and Build Together, and Build with Confidence. We begin with your property, goals and exposure, then move into coordinated design and engineering, permitting and coastal-compliance review, and finally a documented, quality-checked build that John leads hands-on. You stay involved and informed the whole way — we call it Living the Experience. Every custom home is different, so we do not put a stopwatch on your project; what we commit to is a considered, owner-led path from the first conversation to the day you move in.",
     },
   ],
 };
@@ -264,23 +269,16 @@ export const CONSULTATION = {
 // ─── Footer ───
 export const FOOTER = {
   boilerplate:
-    "Net Zero Construction builds luxury custom homes on Florida's Gulf Coast, engineered to the Energy Smart Safe Home standard with Insulated Concrete Form construction, impact-rated materials and energy-smart design.",
+    "Net Zero Construction builds luxury Energy Smart Safe Homes on Florida's Gulf Coast, working with architects and structural engineers on an integrated structural and building-envelope system that can incorporate ICF walls, reinforced-concrete or InsulDeck floors and roofs, impact-rated openings and high-performance mechanical systems.",
 };
 
-// ─── Testimonials — the five real, attributed quotes only ───
+// ─── Testimonials — real, attributed quotes only ───
 export interface Testimonial {
   variant: "editorial-pull" | "client-quote";
   quote: string;
   attribution: string;
   role?: string;
 }
-
-export const SRQ_TESTIMONIAL: Testimonial = {
-  variant: "editorial-pull",
-  quote:
-    "The Combination of innovative technique matched with some of the most advanced building material and products on the market, like Insulated Concrete Form (I.C.F.) walls and impact resistant windows provide a dramatic level of insulation and protection from hurricane force winds in excess of 250 miles per hour.",
-  attribution: "SRQ Magazine",
-};
 
 export const GETREAL_TESTIMONIAL: Testimonial = {
   variant: "editorial-pull",

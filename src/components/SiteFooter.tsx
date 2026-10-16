@@ -12,11 +12,12 @@ export function SiteFooter(): React.JSX.Element {
           {/* Identity */}
           <div>
             <Image
-              src="/brand/logo-white.png"
+              src="/brand/logo-gold.png"
               alt={BRAND.company}
-              width={1136}
-              height={245}
-              className="h-12 w-auto object-contain md:h-14"
+              width={600}
+              height={192}
+              sizes="250px"
+              className="h-16 w-auto object-contain md:h-20"
             />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--color-muted)]">
               {FOOTER.boilerplate}

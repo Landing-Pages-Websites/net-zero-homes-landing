@@ -31,12 +31,13 @@ export function Header(): React.JSX.Element {
           className="flex min-w-0 max-w-[224px] shrink items-center rounded-md mr-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] md:mr-0 md:max-w-none"
         >
           <Image
-            src="/brand/logo-white.png"
+            src="/brand/logo-gold.png"
             alt={BRAND.company}
-            width={1136}
-            height={245}
+            width={600}
+            height={192}
+            sizes="200px"
             priority
-            className="h-12 w-auto object-contain md:h-14"
+            className="h-12 w-auto max-w-full object-contain min-[360px]:h-14 md:h-16"
           />
         </a>
 

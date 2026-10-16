@@ -1,9 +1,8 @@
 import { SectionHeading } from "@/components/SectionHeading";
-import { TestimonialCard } from "@/components/TestimonialCard";
 import { FramedImage } from "@/components/FramedImage";
 import { DualCTA } from "@/components/DualCTA";
 import { Reveal } from "@/components/Reveal";
-import { PROVEN, SRQ_TESTIMONIAL } from "@/lib/content";
+import { PROVEN } from "@/lib/content";
 
 export function ProvenInStorms(): React.JSX.Element {
   return (
@@ -28,7 +27,14 @@ export function ProvenInStorms(): React.JSX.Element {
             />
           </Reveal>
           <Reveal delay={80}>
-            <TestimonialCard testimonial={SRQ_TESTIMONIAL} />
+            <div className="rounded-2xl border-l-2 border-[var(--color-primary)] bg-[var(--color-sand)] p-8 md:p-10">
+              <p className="text-[0.8125rem] font-bold uppercase tracking-[0.14em] text-[var(--color-primary-hover)]">
+                {PROVEN.approach.label}
+              </p>
+              <p className="t-h4 mt-4 font-medium leading-relaxed text-[var(--color-text-dark)]">
+                {PROVEN.approach.statement}
+              </p>
+            </div>
           </Reveal>
         </div>
 
