@@ -132,10 +132,11 @@ export function createEnv() {
   globalThis.localStorage = memoryStorage();
   globalThis.sessionStorage = memoryStorage();
   globalThis.fetch = async (url, init) => {
-    env.requests.push({ url, body: JSON.parse(init.body) });
+    const request = { url, body: JSON.parse(init.body) };
+    env.requests.push(request);
     const respond = env.responders.shift();
     if (!respond) throw new Error("harness: unscripted request (no responder queued)");
-    return respond();
+    return respond(request);
   };
   return env;
 }
@@ -153,6 +154,42 @@ export const transport = {
     return responder;
   },
 };
+
+// In-memory MODEL of the lead platform's documented merge rule — not the real
+// endpoint. Source: https://docs.gomega.ai/landing-pages/form-submission-guide#repeated-test-leads-and-the-shared-phone
+// "merges a form submission into an earlier lead on the same site when the two
+// share a phone or email and arrive within 2 minutes ... A submission after
+// the window creates its own row and never modifies an earlier lead."
+export const MERGE_WINDOW_MS = 2 * 60 * 1000;
+
+export function leadPlatformModel() {
+  const model = { rows: [], confirmedIds: [], nowMs: 0 };
+  const shares = (a, b) => Boolean(a) && a === b;
+  // Window measured from the earlier lead's arrival (strictest reading).
+  const matches = (row, body, at) =>
+    row.siteId === body.site_id &&
+    at - row.receivedAt <= MERGE_WINDOW_MS &&
+    (shares(row.data.phone, body.form_data.phone) || shares(row.data.email, body.form_data.email));
+  const persist = ({ body }) => {
+    const at = model.nowMs;
+    const earlier = model.rows.find((row) => matches(row, body, at));
+    if (earlier) return earlier.id;
+    const row = { id: `lead_${model.rows.length + 1}`, siteId: body.site_id, receivedAt: at, data: body.form_data };
+    model.rows.push(row);
+    return row.id;
+  };
+  // Stores the lead, then the confirmation is lost on the way back.
+  model.persistThenLose = (lose) => (request) => {
+    persist(request);
+    return lose();
+  };
+  model.persistThenAccept = () => (request) => {
+    const id = persist(request);
+    model.confirmedIds.push(id);
+    return transport.json(200, { ok: true, id })();
+  };
+  return model;
+}
 
 // ─── Mounted component instance ───
 export function mount(Component, props, env) {

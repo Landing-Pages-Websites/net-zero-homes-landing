@@ -1,8 +1,19 @@
 // Regression tests for FormCard submission-result handling.
-// Run: node --test tests/form-integrity/
+// Run: node --test tests/form-integrity/*.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createEnv, loadSource, mount, query, settle, transport, ENDPOINT } from "./harness.mjs";
+import {
+  createEnv,
+  leadPlatformModel,
+  loadSource,
+  mount,
+  query,
+  settle,
+  textOf,
+  transport,
+  ENDPOINT,
+  MERGE_WINDOW_MS,
+} from "./harness.mjs";
 
 const { FormCard } = loadSource("components/FormCard.tsx");
 const { DISQUALIFYING_BUDGET, BUDGET_OPTIONS, FORM } = loadSource("lib/content.ts");
@@ -215,4 +226,87 @@ test("independent instances: accepting hero does not lock consult", async () => 
   assert.doesNotMatch(consult.q.text(), THANK_YOU);
   assert.ok(submitError(consult.q));
   assert.deepEqual(env.dataLayer.map((e) => e.form_route), ["/", "/"]);
+});
+
+// ─── Ambiguous outcome: lead stored, confirmation lost ───
+// Runs the real FormCard + real hook against the documented-contract MODEL in
+// harness.mjs. It proves the component's behavior under that contract, not the
+// endpoint's implementation.
+const LOST_CONFIRMATIONS = {
+  "network rejection": transport.networkError,
+  "malformed JSON": transport.malformed,
+};
+const RETRY_DELAY_MS = 30 * 1000;
+
+function assertOneAcceptedEventSet(env) {
+  const route = { form_route: "/" };
+  const events = (first) => [first, "qualified_lead"].map((event) => ({ event, ...route }));
+  assert.deepEqual(env.megaTag, events("form_submit"), "MegaTag: one accepted set");
+  assert.deepEqual(env.dataLayer, events("form_submission"), "dataLayer: one accepted set");
+}
+
+for (const [name, lose] of Object.entries(LOST_CONFIRMATIONS)) {
+  test(`ambiguous (${name}): stored-but-unconfirmed, retry in window merges to one lead`, async () => {
+    const ctx = setup();
+    const platform = leadPlatformModel();
+    ctx.env.responders.push(platform.persistThenLose(lose()));
+    fill(ctx);
+    await click(ctx);
+
+    assert.equal(platform.rows.length, 1, "first request was stored");
+    assertNoSuccess(ctx.env, ctx.q);
+    assertRetryableError(ctx);
+    assert.match(textOf(submitError(ctx.q)), /couldn.t confirm/);
+    assert.doesNotMatch(textOf(submitError(ctx.q)), /wasn.t sent/, "no false not-sent claim");
+
+    platform.nowMs += RETRY_DELAY_MS;
+    ctx.env.responders.push(platform.persistThenAccept());
+    await click(ctx);
+
+    assert.equal(ctx.env.requests.length, 2, "retry really sends a second request");
+    assert.deepEqual(ctx.env.requests[1].body.form_data, ctx.env.requests[0].body.form_data);
+    assert.equal(ctx.env.requests[1].body.site_id, FORM.siteId);
+    assert.equal(platform.rows.length, 1, "modeled logical leads = 1");
+    assert.deepEqual(platform.confirmedIds, [platform.rows[0].id], "retry returns the original id");
+    assertOneAcceptedEventSet(ctx.env);
+    assert.match(ctx.q.text(), THANK_YOU);
+  });
+}
+
+test("ambiguous -> ambiguous retry: no success; final retry yields one lead, one event set", async () => {
+  const ctx = setup();
+  const platform = leadPlatformModel();
+  ctx.env.responders.push(platform.persistThenLose(transport.networkError()));
+  fill(ctx);
+  await click(ctx);
+
+  platform.nowMs += RETRY_DELAY_MS;
+  ctx.env.responders.push(platform.persistThenLose(transport.malformed()));
+  await click(ctx);
+  assertNoSuccess(ctx.env, ctx.q);
+  assertRetryableError(ctx);
+  assert.equal(platform.rows.length, 1);
+
+  platform.nowMs += RETRY_DELAY_MS;
+  ctx.env.responders.push(platform.persistThenAccept());
+  await click(ctx);
+  assert.equal(ctx.env.requests.length, 3);
+  assert.equal(platform.rows.length, 1);
+  assert.deepEqual(platform.confirmedIds, [platform.rows[0].id]);
+  assertOneAcceptedEventSet(ctx.env);
+});
+
+test("documented limit: a retry after the 2-minute window is a second lead", async () => {
+  const ctx = setup();
+  const platform = leadPlatformModel();
+  ctx.env.responders.push(platform.persistThenLose(transport.networkError()));
+  fill(ctx);
+  await click(ctx);
+
+  platform.nowMs += MERGE_WINDOW_MS + 1;
+  ctx.env.responders.push(platform.persistThenAccept());
+  await click(ctx);
+  assert.equal(platform.rows.length, 2, "not exactly-once outside the window");
+  assert.deepEqual(platform.confirmedIds, [platform.rows[1].id], "retry confirmed as its own new lead");
+  assertOneAcceptedEventSet(ctx.env);
 });

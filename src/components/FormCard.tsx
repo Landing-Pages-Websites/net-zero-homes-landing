@@ -198,7 +198,11 @@ export function FormCard({
   };
 
   // Resolves true only when the endpoint explicitly accepted the lead.
-  // Transport, HTTP and parse failures all resolve false (details withheld).
+  // Transport, HTTP and parse failures all resolve false (details withheld),
+  // though the lead may still have been stored. A retry merges into that lead
+  // only inside the platform's documented 2-minute same-site phone/email
+  // window (docs.gomega.ai/landing-pages/form-submission-guide); later
+  // retries create a new row. No idempotency key exists in the hook contract.
   const sendLead = async (qualified: boolean): Promise<boolean> => {
     try {
       const result: unknown = await submit({
@@ -524,7 +528,7 @@ export function FormCard({
           className="rounded-lg border-[1.5px] border-[var(--color-error)]/40 bg-[var(--color-error)]/6 px-3.5 py-3 text-sm leading-snug text-[var(--color-text-dark)] outline-none"
         >
           <span className="block font-bold text-[var(--color-error)]">
-            Your request wasn&apos;t sent.
+            We couldn&apos;t confirm your request.
           </span>
           Your details are still here — please try again, or call{" "}
           <a
