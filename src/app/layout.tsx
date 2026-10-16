@@ -22,12 +22,12 @@ export const metadata: Metadata = {
   title:
     "Luxury Hurricane-Resistant Custom Homes on Florida's Gulf Coast | Net Zero Construction",
   description:
-    "Net Zero Construction builds luxury custom coastal homes with Insulated Concrete Forms (ICF) — engineered for hurricane resistance, energy efficiency and long-term peace of mind on Florida's Gulf Coast. Owner-led by John Wolterman, 25+ years of experience. Request a consultation.",
+    "Net Zero Construction builds luxury Energy Smart Safe Homes on Florida's Gulf Coast — an integrated structural and building-envelope system engineered for hurricane resistance, energy efficiency and long-term peace of mind. Owner-led by John Wolterman, 25+ years of experience. Request a consultation.",
   openGraph: {
     title:
       "Built to Protect Your Family & Your Investment | Net Zero Construction",
     description:
-      "Custom coastal homes built with Insulated Concrete Forms — engineered for hurricane resistance and energy efficiency on Florida's Gulf Coast. A limited number of custom homes each year, personally led by owner John Wolterman.",
+      "Luxury custom coastal homes built on an integrated structural and building-envelope system — engineered for hurricane resistance and energy efficiency on Florida's Gulf Coast. A limited number of custom homes each year, personally led by owner John Wolterman.",
     type: "website",
   },
   icons: {

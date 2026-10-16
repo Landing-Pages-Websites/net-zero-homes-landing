@@ -3,86 +3,167 @@
   "customer_id": "5e8427d2-7b27-4b7d-8057-ccb2d7763739",
   "customer_name": "Net Zero Construction",
   "primary_subdomain": "https://info.netzerohomes.build",
-  "product": "Luxury hurricane-resistant, energy-smart custom home building on Florida's Gulf Coast (ICF construction)",
-  "claims": [
-    {
-      "claim": "Over 25 years of hands-on coastal construction experience",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "note": "Stated on the client's About Us and homepage; used verbatim as '25+ years' / 'over 25 years'."
-    },
-    {
-      "claim": "ICF (Insulated Concrete Form) wall systems designed to withstand extreme wind, flying debris and storm surge, far exceeding traditional wood-frame construction",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "note": "Client homepage differentiator. Stated as method/engineering, never as a survival guarantee."
-    },
-    {
-      "claim": "Homes Net Zero has built have endured recent hurricanes with little to no damage",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "note": "Client homepage, 'Proven Performance in Real Storms'. Stated strictly in past tense."
-    },
-    {
-      "claim": "Energy Smart Safe Home - Net Zero's own named building standard combining ICF structure, impact-rated materials and a high-performance envelope",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "note": "Client's proprietary standard. Homes described as 'net zero-ready', never certified net zero."
-    },
-    {
-      "claim": "Owner John Wolterman personally leads every project alongside a small team, on a limited number of custom homes each year",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "note": "Client homepage, 'Family-Run & Personally Built'. Limited-homes framed as positioning/capacity, not scarcity urgency."
-    },
-    {
-      "claim": "Every project follows the 'Living the Experience' design-and-construction process",
-      "source_url": "https://netzerohomes.build",
-      "verified": true
-    },
-    {
-      "claim": "Service area: roughly a 100-mile radius of Venice, FL - Sarasota, Venice, St. Petersburg, Bradenton, Nokomis, Osprey, Englewood and the surrounding Gulf Coast",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "note": "Radius centered on 700 Commerce Dr, Venice, FL 34292."
-    }
-  ],
-  "testimonials": [
-    {
-      "claim": "The Combination of innovative technique matched with some of the most advanced building material and products on the market, like Insulated Concrete Form (I.C.F.) walls and impact resistant windows provide a dramatic level of insulation and protection from hurricane force winds in excess of 250 miles per hour.",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "attribution": "SRQ Magazine",
-      "note": "Editorial pull. The 250 mph figure appears ONLY inside this attributed quotation, never as a Net Zero first-party claim. Rendered in #proven-in-storms."
-    },
-    {
-      "claim": "From the ground-up, Net Zero's homes are solid, substantial and stunning. Furthermore, they are as distinctive as their owners. Net Zero Construction is raising the bar on residential construction throughout the Gulf Coast region.",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "attribution": "Get Real Exclusive",
-      "note": "Editorial pull. Rendered in #owner-led."
-    },
-    {
-      "claim": "John, was very prompt with a quote for the job, and ready start when we were ready to go. Very professional on the job, and completed the job in a timely manner. We will definitely be using John again.",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "attribution": "Lisa B., Verified Customer",
-      "note": "Rendered in #proof."
-    },
-    {
-      "claim": "Wolterman Bros did very efficient work and was able to work around our production schedule with ease. Will use them again.",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "attribution": "Mike P., Verified Customer",
-      "note": "Rendered in #proof. 'Wolterman Bros' kept verbatim."
-    },
-    {
-      "claim": "Great service, dependable, excellent workmanship and hard workers.",
-      "source_url": "https://netzerohomes.build",
-      "verified": true,
-      "attribution": "Ron D., Verified Customer",
-      "note": "Rendered in #proof."
-    }
-  ],
-  "notes": "No aggregate rating, star rating, review count, award, BBB grade or third-party certification is evidenced on the client's site - none is rendered. No prices, per-square-foot figures or timeline promises appear as page copy; the $1M-$3M+ budget bands live only inside the consultation form's select options. Displayed phone number is the CTM-tracked number that forwards to 941-685-8478; the main site's number (941) 909-3334 never appears."
+  "product": "Luxury Energy Smart Safe Homes on Florida's Gulf Coast, built on a project-specific integrated structural and building-envelope system (ICF walls, reinforced-concrete/InsulDeck floors and roofs where appropriate, structural steel, engineered framing, impact-rated openings)",
+  "current_authority": {
+    "task": "Atlas task a4904c87-88e9-48c9-87bc-cb8d2355d611 — scoped brand refresh (black/gold identity + current positioning). Baseline production main 7a811dbcabb20752808c6665976dd7ac707daa36.",
+    "copy_source": "customer KB company_context/technical_brand_fact_sheet.md (SHA-256 92e94b94f8228d774ebe0feae43161d81dd322023348874f4219d5b5b539b99b)",
+    "supersession_scope": "The fact sheet supersedes the earlier ICF-only marketing positioning only. The conversion contract is task-preserved and NOT superseded: phone (941) 685-8478 / tel:9416858478, CTA labels and destinations, HERO eyebrow/H1/form strings, budget options, FORM ids, tracking IDs. Testimonials, owner biography, experience, geography, gallery captions and photography are unchanged.",
+    "brand_assets": [
+      {
+        "use": "Header + footer logo on charcoal (public/brand/logo-gold.png)",
+        "source_url": "https://netzerohomes.build/wp-content/uploads/2026/01/home-transparent-logo.png",
+        "source_sha256": "465d718e4a50d763dcd41d3595df57a56dc96fa17faa69d7d5898eb29f63b97c",
+        "processing": "Cropped to the alpha bounding box (fully transparent margins only), downscaled 2117x678 -> 600x192 (3x the 200px header slot). No recolouring or redrawing. Tagline retained."
+      },
+      {
+        "use": "Favicon (src/app/icon.png) and Apple touch icon (src/app/apple-icon.png)",
+        "source_url": "https://netzerohomes.build/wp-content/uploads/2026/01/home-transparent-logo.png",
+        "processing": "Gold NZ monogram (left square of the same mark) cropped and contained, aspect preserved, on a #171717 ground — 192x192 rounded square for icon.png, 180x180 full-bleed square for apple-icon.png."
+      },
+      {
+        "use": "Reference only (not shipped)",
+        "source_url": "https://netzerohomes.build/wp-content/uploads/2026/01/New-LOGO-1-e1787044505816.png",
+        "source_sha256": "f62f54270621ef499054d053b0972cc20edf6c9c772c8fc4e1ac88f987c16a49",
+        "note": "Light-surface variant; no light logo surface on this LP."
+      },
+      {
+        "use": "Reference only (not shipped)",
+        "source": "Customer Brand Assets Drive — Net Zero (Official Logo).png, Drive ID 1Q1ovIgQQaaNcIkWgrLJiux6j9dvS6BmA",
+        "source_sha256": "ba3ffa65f0d03d196de9d2f5268ea2f612e67167ba8c67e9309025ca4f963687",
+        "note": "Same gold identity with heavy glow; the website variant was chosen for legibility."
+      }
+    ],
+    "palette_source": "netzerohomes.build active header/footer CSS (gold #c9a227, charcoal #171717) and homepage luxury-hero CSS (black #111111, gold #c9a84c, cream #f7f5f0). Old Elementor green tokens deliberately not used.",
+    "removed_assets": [
+      "public/brand/logo-white.png (old green Z mark)",
+      "public/brand/logo.webp (old green Z mark, unreferenced)"
+    ],
+    "copy_changes": [
+      {
+        "location": "HERO.subhead; layout.tsx metadata description + openGraph description; FOOTER.boilerplate",
+        "change": "ICF-only wording replaced with integrated structural and building-envelope system positioning.",
+        "authority": "Fact sheet §2, §18"
+      },
+      {
+        "location": "TRUST_CHIPS[1]",
+        "change": "'ICF Construction Specialist' -> 'Integrated Coastal Construction'.",
+        "authority": "Fact sheet §2 ('Do not describe Net Zero simply as an ICF builder')"
+      },
+      {
+        "location": "WHY_ICF eyebrow, h2, lede, four card bodies; card 2 title",
+        "change": "Whole-system resilience, moisture detailing, comfort and durability. Removed 'almost no other builder', 'far exceeding wood-frame', mold/pest/rot absolutes and the surge-specific framing. h2 uses the fact sheet's 'right material in the right place, engineered as one system'.",
+        "authority": "Fact sheet §3, §4, §5, §13, §14"
+      },
+      {
+        "location": "PROVEN h2, body; new PROVEN.approach",
+        "change": "'Proven Performance' and 'little to no damage ... proof' replaced with the preferred statement 'Net Zero Construction has completed homes that have been tested by actual Florida hurricane conditions.' plus a project-specific performance note. New PROVEN.approach block (label 'Our building approach') replaces the SRQ pull-quote panel: three sentences verbatim from the fact sheet (§5 'The strength of the home comes from the complete engineered structural system, including the foundation, walls, floors, roof, connections and openings.' and §2 'No single material does everything. Net Zero Construction works with the architect and structural engineer to create an integrated structural system appropriate for each home.'). First-party, no quotation marks, not presented as an external endorsement.",
+        "authority": "Fact sheet §2, §5, §6, §17"
+      },
+      {
+        "location": "SRQ_TESTIMONIAL (removed) / ProvenInStorms.tsx",
+        "change": "SRQ Magazine pull-quote containing 'in excess of 250 miles per hour' removed from source and render; replaced in place by the PROVEN.approach block. No substitute quotation invented.",
+        "authority": "Fact sheet §5, §17 (specific wind speeds require documentation/approval)"
+      },
+      {
+        "location": "ENERGY pillars 1 and 3",
+        "change": "Pillar 1: project-specific structural shell (ICF, InsulDeck/concrete where appropriate, steel, engineered lumber). Pillar 3: coordinated mechanical systems; removed 'net zero-ready' by virtue of the shell, replaced with renewables-can-be-incorporated framing. Pillar 2 unchanged.",
+        "authority": "Fact sheet §4, §7, §8"
+      },
+      {
+        "location": "PROCESS step 02 title/body; FAQ 'process' answer",
+        "change": "'Design and Build Together' -> 'Coordinate and Build Together'; 'architects, engineers' -> 'your architect, structural engineer'; 'the ICF shell' -> 'the project-specific structural system'. Step numbers and process name unchanged.",
+        "authority": "Fact sheet §14; customer QA gate item 2 (builder, not design-build)"
+      },
+      {
+        "location": "FAQ answers: ICF definition, design/looks, energy/comfort, architect",
+        "change": "Removed ICF-as-sole-backbone, block/wood-frame comparisons and net zero-ready claim; acknowledged code-compliant alternatives; ICF framed as one component. Questions, lot and process-structure answers otherwise unchanged. Design answer now says Net Zero coordinates with the structural engineer rather than engineering the structure itself (builder, not design-build).",
+        "authority": "Fact sheet §3, §7, §8, §14"
+      }
+    ]
+  },
+  "historical_provenance": {
+    "product": "Luxury hurricane-resistant, energy-smart custom home building on Florida's Gulf Coast (ICF construction)",
+    "claims": [
+      {
+        "claim": "Over 25 years of hands-on coastal construction experience",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "note": "Stated on the client's About Us and homepage; used verbatim as '25+ years' / 'over 25 years'."
+      },
+      {
+        "claim": "ICF (Insulated Concrete Form) wall systems designed to withstand extreme wind, flying debris and storm surge, far exceeding traditional wood-frame construction",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "note": "Client homepage differentiator. Stated as method/engineering, never as a survival guarantee."
+      },
+      {
+        "claim": "Homes Net Zero has built have endured recent hurricanes with little to no damage",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "note": "Client homepage, 'Proven Performance in Real Storms'. Stated strictly in past tense."
+      },
+      {
+        "claim": "Energy Smart Safe Home - Net Zero's own named building standard combining ICF structure, impact-rated materials and a high-performance envelope",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "note": "Client's proprietary standard. Homes described as 'net zero-ready', never certified net zero."
+      },
+      {
+        "claim": "Owner John Wolterman personally leads every project alongside a small team, on a limited number of custom homes each year",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "note": "Client homepage, 'Family-Run & Personally Built'. Limited-homes framed as positioning/capacity, not scarcity urgency."
+      },
+      {
+        "claim": "Every project follows the 'Living the Experience' design-and-construction process",
+        "source_url": "https://netzerohomes.build",
+        "verified": true
+      },
+      {
+        "claim": "Service area: roughly a 100-mile radius of Venice, FL - Sarasota, Venice, St. Petersburg, Bradenton, Nokomis, Osprey, Englewood and the surrounding Gulf Coast",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "note": "Radius centered on 700 Commerce Dr, Venice, FL 34292."
+      }
+    ],
+    "testimonials": [
+      {
+        "claim": "The Combination of innovative technique matched with some of the most advanced building material and products on the market, like Insulated Concrete Form (I.C.F.) walls and impact resistant windows provide a dramatic level of insulation and protection from hurricane force winds in excess of 250 miles per hour.",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "attribution": "SRQ Magazine",
+        "note": "Editorial pull. The 250 mph figure appears ONLY inside this attributed quotation, never as a Net Zero first-party claim. Rendered in #proven-in-storms."
+      },
+      {
+        "claim": "From the ground-up, Net Zero's homes are solid, substantial and stunning. Furthermore, they are as distinctive as their owners. Net Zero Construction is raising the bar on residential construction throughout the Gulf Coast region.",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "attribution": "Get Real Exclusive",
+        "note": "Editorial pull. Rendered in #owner-led."
+      },
+      {
+        "claim": "John, was very prompt with a quote for the job, and ready start when we were ready to go. Very professional on the job, and completed the job in a timely manner. We will definitely be using John again.",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "attribution": "Lisa B., Verified Customer",
+        "note": "Rendered in #proof."
+      },
+      {
+        "claim": "Wolterman Bros did very efficient work and was able to work around our production schedule with ease. Will use them again.",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "attribution": "Mike P., Verified Customer",
+        "note": "Rendered in #proof. 'Wolterman Bros' kept verbatim."
+      },
+      {
+        "claim": "Great service, dependable, excellent workmanship and hard workers.",
+        "source_url": "https://netzerohomes.build",
+        "verified": true,
+        "attribution": "Ron D., Verified Customer",
+        "note": "Rendered in #proof."
+      }
+    ],
+    "notes": "No aggregate rating, star rating, review count, award, BBB grade or third-party certification is evidenced on the client's site - none is rendered. No prices, per-square-foot figures or timeline promises appear as page copy; the $1M-$3M+ budget bands live only inside the consultation form's select options. Displayed phone number is the CTM-tracked number that forwards to 941-685-8478; the main site's number (941) 909-3334 never appears.",
+    "status": "Original 2026 build provenance (commit 3d9c37b). Retained for history; the ICF-only positioning, 'net zero-ready' framing, 'proof' language, 'Design and Build Together' step name and the SRQ Magazine 250-mph pull-quote listed here are superseded by current_authority below and are no longer rendered."
+  }
 }

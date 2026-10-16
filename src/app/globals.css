@@ -1,30 +1,30 @@
 @import "tailwindcss";
 
 @theme {
-  /* ─── Net Zero Construction — brand tokens (from design_direction.palette) ─── */
-  --color-bg: #1a1f26;             /* page ground (dark) */
-  --color-surface: #222831;        /* cards / dark surfaces */
-  --color-surface-2: #faf8f7;      /* light cream — form card + light sections */
+  /* ─── Net Zero Construction — brand tokens (current black + gold identity) ─── */
+  --color-bg: #171717;             /* page ground (charcoal, matches netzerohomes.build header) */
+  --color-surface: #252528;        /* cards / dark surfaces */
+  --color-surface-2: #f7f5f0;      /* warm cream — form card + light sections */
   --color-sand: #ebe3d0;           /* editorial pull-quote panel */
 
-  --color-primary: #8ca53d;        /* brand olive — FILLS ONLY */
-  --color-primary-hover: #647c1c;
-  --color-primary-active: #546818;
-  --color-primary-ink: #020101;    /* MANDATORY ink on any olive fill */
+  --color-primary: #c9a227;        /* brand gold — FILLS ONLY */
+  --color-primary-hover: #765b12;  /* deep antique gold — white text 6.4:1 */
+  --color-primary-active: #5e480d;
+  --color-primary-ink: #111111;    /* MANDATORY ink on any gold fill (7.8:1) */
 
-  --color-accent: #a8c24f;         /* lightened olive — TEXT/links/eyebrows on dark */
-  --color-accent-soft: #b7c97a;    /* softer olive for large numerals */
+  --color-accent: #c9a84c;         /* light gold — TEXT/links/eyebrows on dark */
+  --color-accent-soft: #dcc27a;    /* softer gold for large numerals */
 
-  --color-text: #ffffff;
-  --color-text-dark: #222831;      /* ink on light sections */
-  --color-muted: #b9c0c8;          /* muted on dark */
-  --color-muted-dark: #4a5560;     /* muted on light */
-  --color-border: #333b45;
+  --color-text: #f7f5f0;
+  --color-text-dark: #171717;      /* ink on light sections */
+  --color-muted: #bdb7ab;          /* muted on dark */
+  --color-muted-dark: #57534c;     /* muted on light */
+  --color-border: #36363a;
   --color-border-light: #d6d0c4;   /* input borders on the cream card */
-  --color-disabled: #4a5560;
+  --color-disabled: #57534c;
 
   --color-error: #c0392b;
-  --color-success: #647c1c;
+  --color-success: var(--color-primary-hover);
 
   --font-display: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
@@ -95,7 +95,7 @@ h4 {
   font-weight: 500;
 }
 
-/* Eyebrow label — olive accent, uppercase, wide tracking */
+/* Eyebrow label — gold accent, uppercase, wide tracking */
 .eyebrow {
   font-family: var(--font-body);
   font-size: 0.8125rem;
@@ -145,6 +145,13 @@ section[id] {
   color: var(--color-error);
   font-weight: 600;
   letter-spacing: 0.01em;
+}
+
+/* FormCard hard-codes the retired olive focus ring as an arbitrary value; remap it to
+   gold here (unlayered, so it wins over the utility) to keep FormCard byte-identical.
+   Delete once FormCard uses a token-based ring. */
+[class*="focus:ring-[rgba(140,165,61,0.25)]"]:focus {
+  --tw-ring-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
 }
 
 /* Native FAQ disclosure — rotate the chevron on open */
