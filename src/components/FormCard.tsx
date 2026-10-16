@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMegaLeadForm } from "@/hooks/useMegaLeadForm";
 import {
   BUDGET_LABEL,
@@ -8,6 +8,7 @@ import {
   DISQUALIFYING_BUDGET,
   HERO,
   PHONE,
+  PHONE_HREF,
 } from "@/lib/content";
 import { Icon } from "@/components/icons";
 
@@ -95,6 +96,12 @@ function formatPhone(value: string): string {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
+// Only an explicit affirmative application response counts as a captured
+// lead. A resolved promise or HTTP 2xx alone is NOT success.
+function isAccepted(result: unknown): boolean {
+  return (result as { ok?: unknown } | null)?.ok === true;
+}
+
 interface FormCardProps {
   idPrefix?: string;
   heading?: string;
@@ -119,11 +126,18 @@ export function FormCard({
   );
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [failedAttempts, setFailedAttempts] = useState(0);
 
   // Synchronous re-entrancy guard — blocks duplicate fires from rapid clicks
-  // before React re-renders with the disabled state.
+  // before React re-renders with the disabled state. Released only when a
+  // submission fails; stays locked once a lead is accepted.
   const inFlightRef = useRef(false);
   const fieldRefs = useRef<Partial<Record<FieldKey, HTMLElement | null>>>({});
+  const submitErrorRef = useRef<HTMLParagraphElement | null>(null);
+
+  useEffect(() => {
+    if (failedAttempts > 0) submitErrorRef.current?.focus();
+  }, [failedAttempts]);
 
   const update = (k: keyof FormState, v: string) => {
     setData((d) => ({ ...d, [k]: v }));
@@ -164,29 +178,52 @@ export function FormCard({
     }
   };
 
+  const showValidationErrors = (allErrors: FieldErrors) => {
+    setErrors(allErrors);
+    setTouched({
+      firstName: true,
+      lastName: true,
+      email: true,
+      phone: true,
+      projectBudget: true,
+    });
+    const firstBad = REQUIRED_ORDER.find((k) => allErrors[k]);
+    if (!firstBad) return;
+    const el = fieldRefs.current[firstBad];
+    try {
+      el?.focus({ preventScroll: false });
+    } catch {
+      el?.focus();
+    }
+  };
+
+  // Resolves true only when the endpoint explicitly accepted the lead.
+  // Transport, HTTP and parse failures all resolve false (details withheld).
+  const sendLead = async (qualified: boolean): Promise<boolean> => {
+    try {
+      const result: unknown = await submit({
+        firstName: data.firstName.trim(),
+        lastName: data.lastName.trim(),
+        email: data.email.trim(),
+        phone: data.phone.replace(/\D/g, ""),
+        projectBudget: data.projectBudget,
+        qualified,
+        disqualification_reason: qualified ? null : "budget_under_1m",
+        route_slug: routeSlug || window.location.pathname,
+      });
+      return isAccepted(result);
+    } catch {
+      return false;
+    }
+  };
+
   // Validate FIRST, then submit. Button is type="button" so the optimizer's
   // capture-phase listener never fires on empty/invalid clicks.
   const handleValidateAndSubmit = async () => {
     if (inFlightRef.current || submitting || submitted) return;
     const allErrors = validateAll(data);
     if (Object.keys(allErrors).length > 0) {
-      setErrors(allErrors);
-      setTouched({
-        firstName: true,
-        lastName: true,
-        email: true,
-        phone: true,
-        projectBudget: true,
-      });
-      const firstBad = REQUIRED_ORDER.find((k) => allErrors[k]);
-      if (firstBad) {
-        const el = fieldRefs.current[firstBad];
-        try {
-          el?.focus({ preventScroll: false });
-        } catch {
-          el?.focus();
-        }
-      }
+      showValidationErrors(allErrors);
       return;
     }
     inFlightRef.current = true;
@@ -194,27 +231,18 @@ export function FormCard({
     // Reporting qualification — does NOT block submit. Every lead is delivered,
     // emailed and written to Keystone; only the qualified flag differs.
     const qualified = data.projectBudget !== DISQUALIFYING_BUDGET;
-    const disqualificationReason = qualified ? null : "budget_under_1m";
+    const accepted = await sendLead(qualified);
+    setSubmitting(false);
+    if (!accepted) {
+      inFlightRef.current = false;
+      setFailedAttempts((n) => n + 1);
+      return;
+    }
+    setSubmitted(true);
     try {
-      await submit({
-        firstName: data.firstName.trim(),
-        lastName: data.lastName.trim(),
-        email: data.email.trim(),
-        phone: data.phone.replace(/\D/g, ""),
-        projectBudget: data.projectBudget,
-        qualified,
-        disqualification_reason: disqualificationReason,
-        route_slug: routeSlug || window.location.pathname,
-      });
       fireTracking(qualified);
-      setSubmitted(true);
-    } catch (err) {
-      console.error("Form submission error:", err);
-      // Still fire tracking + show thank-you so the user isn't stranded.
-      fireTracking(qualified);
-      setSubmitted(true);
-    } finally {
-      setSubmitting(false);
+    } catch {
+      // An analytics side effect must never undo an accepted lead.
     }
   };
 
@@ -263,12 +291,15 @@ export function FormCard({
     `${fieldCls} ${showErr(k) ? "lp-input-error" : ""}`;
   const labelCls =
     "mb-1.5 block text-[0.8125rem] font-semibold text-[var(--color-muted-dark)]";
+  const showSubmitError = failedAttempts > 0 && !submitting;
+  const submitErrorId = `${idPrefix}-submit-error`;
 
   return (
     <form
       onSubmit={handleNativeSubmit}
       noValidate
       aria-label="Request a consultation with Net Zero Construction"
+      aria-describedby={showSubmitError ? submitErrorId : undefined}
       className={`${cardBase} space-y-4 p-6 md:p-7`}
     >
       <div className="space-y-1.5">
@@ -483,6 +514,28 @@ export function FormCard({
           </p>
         )}
       </div>
+
+      {showSubmitError && (
+        <p
+          ref={submitErrorRef}
+          id={submitErrorId}
+          role="alert"
+          tabIndex={-1}
+          className="rounded-lg border-[1.5px] border-[var(--color-error)]/40 bg-[var(--color-error)]/6 px-3.5 py-3 text-sm leading-snug text-[var(--color-text-dark)] outline-none"
+        >
+          <span className="block font-bold text-[var(--color-error)]">
+            Your request wasn&apos;t sent.
+          </span>
+          Your details are still here — please try again, or call{" "}
+          <a
+            href={PHONE_HREF}
+            className="whitespace-nowrap rounded-sm font-semibold underline underline-offset-2 transition-colors hover:text-[var(--color-error)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-hover)] focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--color-surface-2)]"
+          >
+            {PHONE}
+          </a>
+          .
+        </p>
+      )}
 
       <button
         type="button"
