@@ -8,9 +8,14 @@ import {
   DISQUALIFYING_BUDGET,
   HERO,
   PHONE,
-  PHONE_HREF,
 } from "@/lib/content";
 import { Icon } from "@/components/icons";
+import { SubmissionNotice, noticeFor } from "@/components/SubmissionNotice";
+import {
+  beginAttempt,
+  finishAttempt,
+  useSubmissionAttempt,
+} from "@/components/submissionAttempt";
 
 declare global {
   interface Window {
@@ -124,20 +129,20 @@ export function FormCard({
   const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>(
     {}
   );
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [failedAttempts, setFailedAttempts] = useState(0);
+  // Page-wide attempt shared with the other card. Once a request may have
+  // been sent, neither card sends again in this browser session.
+  const attempt = useSubmissionAttempt();
+  const submitting = attempt.phase === "sending" && attempt.owner === idPrefix;
+  const [storageBlocked, setStorageBlocked] = useState(false);
+  // Bumped whenever this card's own action produces a notice to focus.
+  const [noticeFocus, setNoticeFocus] = useState(0);
 
-  // Synchronous re-entrancy guard — blocks duplicate fires from rapid clicks
-  // before React re-renders with the disabled state. Released only when a
-  // submission fails; stays locked once a lead is accepted.
-  const inFlightRef = useRef(false);
   const fieldRefs = useRef<Partial<Record<FieldKey, HTMLElement | null>>>({});
-  const submitErrorRef = useRef<HTMLParagraphElement | null>(null);
+  const noticeRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
-    if (failedAttempts > 0) submitErrorRef.current?.focus();
-  }, [failedAttempts]);
+    if (noticeFocus > 0) noticeRef.current?.focus();
+  }, [noticeFocus]);
 
   const update = (k: keyof FormState, v: string) => {
     setData((d) => ({ ...d, [k]: v }));
@@ -197,12 +202,9 @@ export function FormCard({
     }
   };
 
-  // Resolves true only when the endpoint explicitly accepted the lead.
-  // Transport, HTTP and parse failures all resolve false (details withheld),
-  // though the lead may still have been stored. A retry merges into that lead
-  // only inside the platform's documented 2-minute same-site phone/email
-  // window (docs.gomega.ai/landing-pages/form-submission-guide); later
-  // retries create a new row. No idempotency key exists in the hook contract.
+  // Resolves true only when the endpoint explicitly accepted the lead. Every
+  // other outcome is UNCONFIRMED: the lead may still have been stored, and
+  // the hook has no idempotency key, so it is never resent.
   const sendLead = async (qualified: boolean): Promise<boolean> => {
     try {
       const result: unknown = await submit({
@@ -221,28 +223,31 @@ export function FormCard({
     }
   };
 
-  // Validate FIRST, then submit. Button is type="button" so the optimizer's
-  // capture-phase listener never fires on empty/invalid clicks.
+  // Validate FIRST, then claim the page-wide attempt, then submit. Button is
+  // type="button" so the optimizer's capture-phase listener never fires on
+  // empty/invalid clicks. beginAttempt is synchronous, so same-tick clicks on
+  // either card cannot both reach the hook.
   const handleValidateAndSubmit = async () => {
-    if (inFlightRef.current || submitting || submitted) return;
     const allErrors = validateAll(data);
     if (Object.keys(allErrors).length > 0) {
       showValidationErrors(allErrors);
       return;
     }
-    inFlightRef.current = true;
-    setSubmitting(true);
+    const claim = beginAttempt(idPrefix);
+    setStorageBlocked(claim === "storage-unavailable");
+    if (claim !== "started") {
+      setNoticeFocus((n) => n + 1);
+      return;
+    }
     // Reporting qualification — does NOT block submit. Every lead is delivered,
     // emailed and written to Keystone; only the qualified flag differs.
     const qualified = data.projectBudget !== DISQUALIFYING_BUDGET;
     const accepted = await sendLead(qualified);
-    setSubmitting(false);
+    finishAttempt(accepted);
     if (!accepted) {
-      inFlightRef.current = false;
-      setFailedAttempts((n) => n + 1);
+      setNoticeFocus((n) => n + 1);
       return;
     }
-    setSubmitted(true);
     try {
       fireTracking(qualified);
     } catch {
@@ -257,7 +262,7 @@ export function FormCard({
   const cardBase =
     "rounded-2xl border border-[var(--color-sand)] bg-[var(--color-surface-2)] shadow-form";
 
-  if (submitted) {
+  if (attempt.phase === "accepted") {
     return (
       <div className={`${cardBase} p-8 md:p-10`}>
         <div className="flex flex-col items-center gap-4 text-center">
@@ -295,15 +300,15 @@ export function FormCard({
     `${fieldCls} ${showErr(k) ? "lp-input-error" : ""}`;
   const labelCls =
     "mb-1.5 block text-[0.8125rem] font-semibold text-[var(--color-muted-dark)]";
-  const showSubmitError = failedAttempts > 0 && !submitting;
-  const submitErrorId = `${idPrefix}-submit-error`;
+  const notice = noticeFor(attempt, idPrefix, storageBlocked, noticeFocus > 0);
+  const noticeId = `${idPrefix}-submit-error`;
 
   return (
     <form
       onSubmit={handleNativeSubmit}
       noValidate
       aria-label="Request a consultation with Net Zero Construction"
-      aria-describedby={showSubmitError ? submitErrorId : undefined}
+      aria-describedby={notice ? noticeId : undefined}
       className={`${cardBase} space-y-4 p-6 md:p-7`}
     >
       <div className="space-y-1.5">
@@ -519,32 +524,20 @@ export function FormCard({
         )}
       </div>
 
-      {showSubmitError && (
-        <p
-          ref={submitErrorRef}
-          id={submitErrorId}
-          role="alert"
-          tabIndex={-1}
-          className="rounded-lg border-[1.5px] border-[var(--color-error)]/40 bg-[var(--color-error)]/6 px-3.5 py-3 text-sm leading-snug text-[var(--color-text-dark)] outline-none"
-        >
-          <span className="block font-bold text-[var(--color-error)]">
-            We couldn&apos;t confirm your request.
-          </span>
-          Your details are still here — please try again, or call{" "}
-          <a
-            href={PHONE_HREF}
-            className="whitespace-nowrap rounded-sm font-semibold underline underline-offset-2 transition-colors hover:text-[var(--color-error)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-hover)] focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--color-surface-2)]"
-          >
-            {PHONE}
-          </a>
-          .
-        </p>
+      {notice && (
+        <SubmissionNotice
+          id={noticeId}
+          kind={notice.kind}
+          announce={notice.announce}
+          noticeRef={noticeRef}
+        />
       )}
 
       <button
         type="button"
         onClick={handleValidateAndSubmit}
-        disabled={submitting || submitted}
+        disabled={attempt.phase !== "idle"}
+        aria-describedby={notice ? noticeId : undefined}
         className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-6 py-3.5 text-base font-bold text-[var(--color-primary-ink)] transition-all hover:-translate-y-px hover:bg-[var(--color-primary-hover)] hover:text-white active:translate-y-0 active:bg-[var(--color-primary-active)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-hover)] focus-visible:ring-offset-2 disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-[var(--color-sand)] disabled:text-[var(--color-muted-dark)]"
       >
         {submitting ? "Sending…" : "Request a Consultation"}

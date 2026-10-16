@@ -24,7 +24,10 @@ export const ENDPOINT = "https://analytics.gomega.ai/submission/submit";
 const Fragment = Symbol("Fragment");
 let current = null;
 
+// Child function components (Icon, SubmissionNotice) are stateless, so they
+// are rendered inline into the parent's tree.
 function jsx(type, props, key) {
+  if (typeof type === "function") return type(props ?? {});
   if (props && typeof props.ref === "function" && current) {
     current.pendingRefs.push(props.ref);
   }
@@ -61,11 +64,25 @@ function useEffect(fn, deps) {
   }
 }
 
-const fakeReact = { Fragment, useState, useRef, useCallback, useEffect };
+// Store updates mark the instance dirty; mount() commits effect-driven
+// updates, and tests re-render the other card after each settle().
+function useSyncExternalStore(subscribe, getSnapshot) {
+  const inst = current;
+  slot(() => subscribe(() => (inst.dirty = true)));
+  return getSnapshot();
+}
+
+const fakeReact = { Fragment, useState, useRef, useCallback, useEffect, useSyncExternalStore };
 const fakeJsxRuntime = { jsx, jsxs: jsx, jsxDEV: jsx, Fragment };
 
 // ─── Module loader (transpile TS/TSX, resolve "@/") ───
 const cache = new Map();
+// "fake" = the hooks runtime above; "real" = the installed react, for SSR.
+let reactMode = "fake";
+const reactFor = (spec) => {
+  if (reactMode === "real") return require(spec);
+  return spec === "react" ? fakeReact : fakeJsxRuntime;
+};
 
 function resolveSource(spec, fromDir) {
   const base = spec.startsWith("@/") ? path.join(SRC, spec.slice(2)) : path.resolve(fromDir, spec);
@@ -89,8 +106,7 @@ function loadModule(file) {
   const mod = { exports: {} };
   cache.set(file, mod);
   const localRequire = (spec) => {
-    if (spec === "react") return fakeReact;
-    if (spec === "react/jsx-runtime" || spec === "react/jsx-dev-runtime") return fakeJsxRuntime;
+    if (spec === "react" || spec === "react/jsx-runtime" || spec === "react/jsx-dev-runtime") return reactFor(spec);
     if (spec.startsWith("@/") || spec.startsWith(".")) return loadModule(resolveSource(spec, path.dirname(file)));
     throw new Error(`harness: unexpected import "${spec}" in ${file}`);
   };
@@ -102,11 +118,52 @@ export function loadSource(rel) {
   return loadModule(path.join(SRC, rel));
 }
 
-// ─── Isolated browser-ish globals + recorders ───
-function memoryStorage() {
-  const m = new Map();
-  return { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => m.set(k, String(v)) };
+// A fresh module graph = a fresh page load: module state (the page-wide
+// attempt store) starts over, while whatever sessionStorage the env carries
+// persists. No production reset hook is needed.
+export function freshPage() {
+  cache.clear();
+  reactMode = "fake";
+  return loadSource("components/FormCard.tsx").FormCard;
 }
+
+// Server-renders the real FormCard with the real react-dom/server, with no
+// window/sessionStorage (as on the server). Restores the fake runtime after.
+export function renderOnServer(props) {
+  const saved = { window: globalThis.window, sessionStorage: Object.getOwnPropertyDescriptor(globalThis, "sessionStorage") };
+  cache.clear();
+  reactMode = "real";
+  delete globalThis.window;
+  delete globalThis.sessionStorage;
+  try {
+    const { FormCard } = loadSource("components/FormCard.tsx");
+    const { createElement } = require("react");
+    return require("react-dom/server").renderToString(createElement(FormCard, props));
+  } finally {
+    cache.clear();
+    reactMode = "fake";
+    globalThis.window = saved.window;
+    if (saved.sessionStorage) Object.defineProperty(globalThis, "sessionStorage", saved.sessionStorage);
+  }
+}
+
+// ─── Isolated browser-ish globals + recorders ───
+export function memoryStorage() {
+  const m = new Map();
+  return {
+    getItem: (k) => m.get(k) ?? null,
+    setItem: (k, v) => void m.set(k, String(v)),
+    entries: () => Object.fromEntries(m),
+  };
+}
+
+// Ways a browser can refuse sessionStorage (privacy modes, quotas, policy).
+export const brokenStorage = {
+  "setItem throws": () => ({ ...memoryStorage(), setItem: () => { throw new DOMException("quota", "QuotaExceededError"); } }),
+  "setItem silently ignored": () => ({ ...memoryStorage(), setItem: () => {} }),
+  "getItem throws": () => ({ ...memoryStorage(), getItem: () => { throw new DOMException("denied", "SecurityError"); } }),
+  "storage getter throws": () => null,
+};
 
 function recordingWindow(env) {
   const dataLayer = [];
@@ -125,12 +182,22 @@ function recordingWindow(env) {
   };
 }
 
-export function createEnv() {
-  const env = { requests: [], megaTag: [], dataLayer: [], focused: null, responders: [], trackingThrows: false };
+function installSessionStorage(win, storage) {
+  const descriptor = storage
+    ? { value: storage, configurable: true, writable: true }
+    : { get: () => { throw new DOMException("denied", "SecurityError"); }, configurable: true };
+  Object.defineProperty(win, "sessionStorage", descriptor);
+  Object.defineProperty(globalThis, "sessionStorage", descriptor);
+}
+
+// One browser tab. Pass the previous env's `session` to model a same-tab
+// reload; omit it for a genuinely separate browsing session.
+export function createEnv({ session = memoryStorage() } = {}) {
+  const env = { requests: [], megaTag: [], dataLayer: [], focused: null, responders: [], trackingThrows: false, session };
   globalThis.window = recordingWindow(env);
   globalThis.document = { cookie: "", referrer: "" };
   globalThis.localStorage = memoryStorage();
-  globalThis.sessionStorage = memoryStorage();
+  installSessionStorage(globalThis.window, session);
   globalThis.fetch = async (url, init) => {
     const request = { url, body: JSON.parse(init.body) };
     env.requests.push(request);
@@ -155,38 +222,21 @@ export const transport = {
   },
 };
 
-// In-memory MODEL of the lead platform's documented merge rule — not the real
-// endpoint. Source: https://docs.gomega.ai/landing-pages/form-submission-guide#repeated-test-leads-and-the-shared-phone
-// "merges a form submission into an earlier lead on the same site when the two
-// share a phone or email and arrive within 2 minutes ... A submission after
-// the window creates its own row and never modifies an earlier lead."
+// The lead platform's documented same-site phone/email merge window, from
+// https://docs.gomega.ai/landing-pages/form-submission-guide#repeated-test-leads-and-the-shared-phone
+// A resend after it would be a second lead row. Tests advance past it to
+// show that time never releases the no-resend lock.
 export const MERGE_WINDOW_MS = 2 * 60 * 1000;
 
+// In-memory stand-in for an endpoint that STORES a request and then loses the
+// confirmation on the way back. Every request that reaches it becomes a row
+// (no merging assumed), so `rows.length` counts what a server would hold. It
+// is not the real endpoint and proves nothing about server-side dedup.
 export function leadPlatformModel() {
-  const model = { rows: [], confirmedIds: [], nowMs: 0 };
-  const shares = (a, b) => Boolean(a) && a === b;
-  // Window measured from the earlier lead's arrival (strictest reading).
-  const matches = (row, body, at) =>
-    row.siteId === body.site_id &&
-    at - row.receivedAt <= MERGE_WINDOW_MS &&
-    (shares(row.data.phone, body.form_data.phone) || shares(row.data.email, body.form_data.email));
-  const persist = ({ body }) => {
-    const at = model.nowMs;
-    const earlier = model.rows.find((row) => matches(row, body, at));
-    if (earlier) return earlier.id;
-    const row = { id: `lead_${model.rows.length + 1}`, siteId: body.site_id, receivedAt: at, data: body.form_data };
-    model.rows.push(row);
-    return row.id;
-  };
-  // Stores the lead, then the confirmation is lost on the way back.
+  const model = { rows: [] };
   model.persistThenLose = (lose) => (request) => {
-    persist(request);
+    model.rows.push(request.body);
     return lose();
-  };
-  model.persistThenAccept = () => (request) => {
-    const id = persist(request);
-    model.confirmedIds.push(id);
-    return transport.json(200, { ok: true, id })();
   };
   return model;
 }
@@ -212,6 +262,8 @@ export function mount(Component, props, env) {
     }
     const effects = inst.effects.splice(0);
     effects.forEach((fn) => fn());
+    // Like React: state set during effects (e.g. a restored marker) commits.
+    if (inst.dirty) return inst.render();
     return inst.tree;
   };
   inst.render();
@@ -246,7 +298,6 @@ export function query(inst) {
     byId: (id) => all().find((n) => n.props.id === id),
     button: () => all().find((n) => n.type === "button"),
     form: () => all().find((n) => n.type === "form"),
-    alerts: () => all().filter((n) => n.props.role === "alert"),
     text: () => textOf(inst.tree),
   };
 }
